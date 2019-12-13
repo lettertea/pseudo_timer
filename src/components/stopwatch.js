@@ -20,7 +20,7 @@ class Stopwatch extends Component {
         this.timer = setInterval(() => {
           this.setState({runningTime: Date.now() - startTime});
         }, 10);
-        
+
         this.setState({isTiming: true});
       }
       // Prevents stopwatch from starting again after finishing
@@ -44,13 +44,16 @@ class Stopwatch extends Component {
   }
 
   displayStopwatch() {
-    const seconds = Math.trunc(this.state.runningTime / 1000) % 60;
     const minutes = Math.trunc(this.state.runningTime / 60000);
-
+    let seconds = Math.trunc(this.state.runningTime / 1000) % 60;
     let centiseconds = Math.trunc(this.state.runningTime / 10) % 100;
+
     // Add leading zeros
     centiseconds = ("0" + centiseconds).substr(-2);
-
+    if (minutes > 0 && seconds < 10) {
+      seconds = "0" + seconds;
+    }
+    
     return minutes === 0 ? `${seconds}.${centiseconds}` : `${minutes}:${seconds}.${centiseconds}`;
   }
 
