@@ -46,8 +46,8 @@ class Stopwatch extends Component {
   }
 
   displayStopwatch() {
-    const seconds = Math.trunc(this.state.runningTime / 1000);
-    const minutes = Math.trunc(seconds / 60);
+    const seconds = Math.trunc(this.state.runningTime / 1000) % 60;
+    const minutes = Math.trunc(this.state.runningTime / 60000);
 
     let centiseconds = Math.trunc(this.state.runningTime / 10) % 100;
     // Add leading zeros
