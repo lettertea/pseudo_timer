@@ -15,16 +15,14 @@ class Stopwatch extends Component {
   handleOnKeyUp = e => {
     if (e.key === " ") {
       if (!this.state.isTiming && !this.state.holdingSpaceAtStop) {
-        this.setState(state => {
-          const startTime = Date.now();
-          this.timer = setInterval(() => {
-            this.setState({runningTime: Date.now() - startTime});
-          }, 10);
-        });
 
+        const startTime = Date.now();
+        this.timer = setInterval(() => {
+          this.setState({runningTime: Date.now() - startTime});
+        }, 10);
+        
         this.setState({isTiming: true});
       }
-
       // Prevents stopwatch from starting again after finishing
       this.setState({holdingSpaceAtStop: false});
     }
