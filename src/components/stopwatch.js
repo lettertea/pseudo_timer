@@ -2,24 +2,22 @@ import React, {useEffect, useState, useRef} from "react";
 
 function Stopwatch() {
   const [runningTime, setRunningTime] = useState(0);
-  // Refs are used to prevent retrieving stale states for key event handlers
-  // More info: https://reactjs.org/docs/hooks-faq.html#why-am-i-seeing-stale-props-or-state-inside-my-function
-  const isHoldingSpaceAtStop = useRef(false);
-  const isTiming = useRef(false);
+  let isHoldingSpaceAtStop = false;
+  let isTiming = false;
 
   let timer;
 
   function handleOnKeyUp(e) {
     if (e.key === " ") {
-      if (!isTiming.current && !isHoldingSpaceAtStop.current) {
+      if (!isTiming && !isHoldingSpaceAtStop) {
         const startTime = Date.now();
         timer = setInterval(() => {
           setRunningTime(Date.now() - startTime)
         }, 10);
-        isTiming.current = true
+        isTiming = true
       }
       // Prevents stopwatch from starting again after finishing
-      isHoldingSpaceAtStop.current = false;
+      isHoldingSpaceAtStop = false;
 
     }
   }
@@ -27,11 +25,10 @@ function Stopwatch() {
 
   function handleKeyDown(e) {
     if (e.key === " ") {
-      if (isTiming.current) {
-        console.log("Hi");
+      if (isTiming) {
         clearInterval(timer);
-        isTiming.current = false;
-        isHoldingSpaceAtStop.current = true;
+        isTiming = false;
+        isHoldingSpaceAtStop = true;
       }
     }
   }
@@ -54,6 +51,7 @@ function Stopwatch() {
     document.body.onkeyup = handleOnKeyUp;
     document.body.onkeypress = handleKeyDown;
   }, []);
+
 
   return (
     <div>
