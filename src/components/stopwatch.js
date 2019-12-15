@@ -1,70 +1,72 @@
-import React, {Component} from "react";
+import React, {useEffect, useState, useRef} from "react";
 
-class Stopwatch extends Component {
-  state = {
-    holdingSpaceAtStop: false,
-    isTiming: false,
-    runningTime: 0
-  };
+function Stopwatch() {
+  const [runningTime, setRunningTime] = useState(0);
+  // Refs are used to prevent retrieving stale states for key event handlers
+  // More info: https://reactjs.org/docs/hooks-faq.html#why-am-i-seeing-stale-props-or-state-inside-my-function
+  const isHoldingSpaceAtStop = useRef(false);
+  const isTiming = useRef(false);
 
-  componentDidMount() {
-    document.body.onkeyup = this.handleOnKeyUp;
-    document.body.onkeypress = this.handleKeyDown;
-  }
+  let timer;
 
-  handleOnKeyUp = e => {
+  function handleOnKeyUp(e) {
     if (e.key === " ") {
-      if (!this.state.isTiming && !this.state.holdingSpaceAtStop) {
-
+      if (!isTiming.current && !isHoldingSpaceAtStop.current) {
         const startTime = Date.now();
-        this.timer = setInterval(() => {
-          this.setState({runningTime: Date.now() - startTime});
+        timer = setInterval(() => {
+          setRunningTime(Date.now() - startTime)
         }, 10);
-
-        this.setState({isTiming: true});
+        isTiming.current = true
       }
       // Prevents stopwatch from starting again after finishing
-      this.setState({holdingSpaceAtStop: false});
+      isHoldingSpaceAtStop.current = false;
+
     }
   }
 
 
-  handleKeyDown = (e) => {
+  function handleKeyDown(e) {
     if (e.key === " ") {
-      if (this.state.isTiming) {
-        clearInterval(this.timer);
-        this.setState({isTiming: false, holdingSpaceAtStop: true});
+      if (isTiming.current) {
+        console.log("Hi");
+        clearInterval(timer);
+        isTiming.current = false;
+        isHoldingSpaceAtStop.current = true;
       }
     }
-
-  };
-
-  componentWillUnmount() {
-    clearInterval(this.timer);
   }
 
-  displayStopwatch() {
-    const minutes = Math.trunc(this.state.runningTime / 60000);
-    let seconds = Math.trunc(this.state.runningTime / 1000) % 60;
-    let centiseconds = Math.trunc(this.state.runningTime / 10) % 100;
+  function displayStopwatch() {
+    const minutes = Math.trunc(runningTime / 60000);
+    let seconds = Math.trunc(runningTime / 1000) % 60;
+    let centiseconds = Math.trunc(runningTime / 10) % 100;
 
     // Add leading zeros
     centiseconds = ("0" + centiseconds).substr(-2);
     if (minutes > 0 && seconds < 10) {
       seconds = "0" + seconds;
     }
-    
+
     return minutes === 0 ? `${seconds}.${centiseconds}` : `${minutes}:${seconds}.${centiseconds}`;
   }
 
+  useEffect(() => {
+    document.body.onkeyup = handleOnKeyUp;
+    document.body.onkeypress = handleKeyDown;
+  }, []);
 
-  render() {
-    return (
-      <div onKeyUp={e => console.log(e.keyCode)}>
-        <p>{this.displayStopwatch()}</p>
-      </div>
-    );
-  }
+  useEffect(() => {
+    return () => {
+      clearInterval()
+    };
+  }, []);
+
+  return (
+    <div>
+      <p>{displayStopwatch()}</p>
+    </div>
+  );
 }
+
 
 export default Stopwatch;
