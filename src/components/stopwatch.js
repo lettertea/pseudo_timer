@@ -8,6 +8,7 @@ function Stopwatch() {
   let timer;
 
   function handleOnKeyUp(e) {
+    e.preventDefault()
     if (e.key === " ") {
       if (!isTiming && !isHoldingSpaceAtStop) {
         const startTime = Date.now();
@@ -24,6 +25,7 @@ function Stopwatch() {
 
 
   function handleKeyDown(e) {
+    e.preventDefault()
     if (e.key === " ") {
       if (isTiming) {
         clearInterval(timer);
