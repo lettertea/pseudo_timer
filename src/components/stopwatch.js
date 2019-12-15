@@ -2,9 +2,9 @@ import React, {useEffect, useState, useRef} from "react";
 
 function Stopwatch() {
   const [runningTime, setRunningTime] = useState(0);
+
   let isHoldingSpaceAtStop = false;
   let isTiming = false;
-
   let timer;
 
   function handleOnKeyUp(e) {
@@ -16,10 +16,10 @@ function Stopwatch() {
           setRunningTime(Date.now() - startTime)
         }, 10);
         isTiming = true
-      }
+      } else {
       // Prevents stopwatch from starting again after finishing
       isHoldingSpaceAtStop = false;
-
+      }
     }
   }
 
