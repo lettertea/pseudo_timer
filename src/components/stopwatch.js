@@ -55,12 +55,6 @@ function Stopwatch() {
     document.body.onkeypress = handleKeyDown;
   }, []);
 
-  useEffect(() => {
-    return () => {
-      clearInterval()
-    };
-  }, []);
-
   return (
     <div>
       <p>{displayStopwatch()}</p>
