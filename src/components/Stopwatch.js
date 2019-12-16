@@ -1,7 +1,13 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 
-function Stopwatch() {
+function Stopwatch(props) {
   const [runningTime, setRunningTime] = useState(0);
+
+  // Ref allows access to fresh state from event handlers
+  let refRunningTime = useRef(runningTime);
+  useEffect(() => {
+    refRunningTime.current = runningTime;
+  }, [runningTime]);
 
   let isHoldingSpaceAtStop = false;
   let isTiming = false;
@@ -17,8 +23,8 @@ function Stopwatch() {
         }, 10);
         isTiming = true
       } else {
-      // Prevents stopwatch from starting again after finishing
-      isHoldingSpaceAtStop = false;
+        // Prevents stopwatch from starting again after finishing
+        isHoldingSpaceAtStop = false;
       }
     }
   }
@@ -31,14 +37,16 @@ function Stopwatch() {
         clearInterval(timer);
         isTiming = false;
         isHoldingSpaceAtStop = true;
+
+        props.setRecordedTime(displayStopwatch(refRunningTime.current));
       }
     }
   }
 
-  function displayStopwatch() {
-    const minutes = Math.trunc(runningTime / 60000);
-    let seconds = Math.trunc(runningTime / 1000) % 60;
-    let centiseconds = Math.trunc(runningTime / 10) % 100;
+  function displayStopwatch(totalMilliseconds = runningTime) {
+    const minutes = Math.trunc(totalMilliseconds / 60000);
+    let seconds = Math.trunc(totalMilliseconds / 1000) % 60;
+    let centiseconds = Math.trunc(totalMilliseconds / 10) % 100;
 
     // Add leading zeros
     centiseconds = ("0" + centiseconds).substr(-2);
