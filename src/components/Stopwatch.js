@@ -8,6 +8,7 @@ class Stopwatch extends Component {
   isHoldingSpaceAtStop = false;
   isTiming = false;
   timer;
+  displayedTimeRef = React.createRef()
 
   componentDidMount() {
     document.body.onkeyup = this.handleOnKeyUp;
@@ -38,7 +39,7 @@ class Stopwatch extends Component {
         clearInterval(this.timer);
         this.isTiming = false;
         this.isHoldingSpaceAtStop = true;
-        this.props.setRecordedTimes([this.displayedTime.innerText, ...this.props.recordedTimes]);
+        this.props.setRecordedTimes([this.displayedTimeRef.current.innerText, ...this.props.recordedTimes]);
       }
     }
     e.preventDefault();
@@ -66,7 +67,7 @@ class Stopwatch extends Component {
   render() {
     return (
       <div>
-        <p ref={r => this.displayedTime = r}>{this.displayTime(this.state.runningTime)}</p>
+        <p ref={this.displayedTimeRef}>{this.displayTime(this.state.runningTime)}</p>
       </div>
     );
   }
