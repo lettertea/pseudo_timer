@@ -1,52 +1,57 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {Component} from "react";
 
-function Stopwatch(props) {
-  const [runningTime, setRunningTime] = useState(0);
+class Stopwatch extends Component {
+  state = {
+    runningTime: 0
+  };
 
-  // Ref allows access to fresh state from event handlers
-  let refRunningTime = useRef(runningTime);
-  useEffect(() => {
-    refRunningTime.current = runningTime;
-  }, [runningTime]);
+  isHoldingSpaceAtStop = false;
+  isTiming = false;
+  timer;
 
-  let isHoldingSpaceAtStop = false;
-  let isTiming = false;
-  let timer;
+  componentDidMount() {
+    document.body.onkeyup = this.handleOnKeyUp;
+    document.body.onkeypress = this.handleKeyDown;
+  }
 
-  function handleOnKeyUp(e) {
-    e.preventDefault()
+  handleOnKeyUp = e => {
     if (e.key === " ") {
-      if (!isTiming && !isHoldingSpaceAtStop) {
+      if (!this.isTiming && !this.isHoldingSpaceAtStop) {
         const startTime = Date.now();
-        timer = setInterval(() => {
-          setRunningTime(Date.now() - startTime)
+        this.timer = setInterval(() => {
+          this.setState({runningTime: Date.now() - startTime});
         }, 10);
-        isTiming = true
-      } else {
-        // Prevents stopwatch from starting again after finishing
-        isHoldingSpaceAtStop = false;
+
+        this.isTiming = true;
       }
+      // Prevents stopwatch from starting again after finishing
+      this.isHoldingSpaceAtStop = false;
     }
+    e.preventDefault();
+
   }
 
 
-  function handleKeyDown(e) {
-    e.preventDefault()
+  handleKeyDown = (e) => {
     if (e.key === " ") {
-      if (isTiming) {
-        clearInterval(timer);
-        isTiming = false;
-        isHoldingSpaceAtStop = true;
-
-        props.setRecordedTime(displayStopwatch(refRunningTime.current));
+      if (this.isTiming) {
+        clearInterval(this.timer);
+        this.isTiming = false;
+        this.isHoldingSpaceAtStop = true;
+        this.props.setRecordedTimes([this.displayedTime.innerText, ...this.props.recordedTimes]);
       }
     }
+    e.preventDefault();
+  };
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
   }
 
-  function displayStopwatch(totalMilliseconds = runningTime) {
-    const minutes = Math.trunc(totalMilliseconds / 60000);
-    let seconds = Math.trunc(totalMilliseconds / 1000) % 60;
-    let centiseconds = Math.trunc(totalMilliseconds / 10) % 100;
+  displayTime(milliseconds) {
+    const minutes = Math.trunc(milliseconds / 60000);
+    let seconds = Math.trunc(milliseconds / 1000) % 60;
+    let centiseconds = Math.trunc(milliseconds / 10) % 100;
 
     // Add leading zeros
     centiseconds = ("0" + centiseconds).substr(-2);
@@ -57,18 +62,14 @@ function Stopwatch(props) {
     return minutes === 0 ? `${seconds}.${centiseconds}` : `${minutes}:${seconds}.${centiseconds}`;
   }
 
-  useEffect(() => {
-    document.body.onkeyup = handleOnKeyUp;
-    document.body.onkeypress = handleKeyDown;
-  }, []);
 
-
-  return (
-    <div>
-      <p>{displayStopwatch()}</p>
-    </div>
-  );
+  render() {
+    return (
+      <div>
+        <p ref={r => this.displayedTime = r}>{this.displayTime(this.state.runningTime)}</p>
+      </div>
+    );
+  }
 }
-
 
 export default Stopwatch;

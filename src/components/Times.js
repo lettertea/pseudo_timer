@@ -6,20 +6,10 @@ function Time(props) {
 
 function Times(props) {
 
-  const [times, setTimes] = useState([]);
-
-
-  useEffect(() => {
-    // Checks against -1 to avoid inserting the initial value on component mount
-    if (props.recordedTime !== -1) {
-      setTimes([props.recordedTime, ...times]);
-    }
-  }, [props.recordedTime])
-
 
   return (
     <ul>
-      {times.map((time, index) => <Time key={index} time={time}/>)}
+      {props.recordedTimes.map((time, index) => <Time key={index} time={time}/>)}
     </ul>
   );
 

@@ -6,11 +6,11 @@ import Stopwatch from "./components/Stopwatch";
 import Times from "./components/Times";
 
 function App() {
-  const [recordedTime, setRecordedTime] = useState(-1);
+  const [recordedTimes, setRecordedTimes] = useState([]);
   return (
     <div className="App">
-      <Stopwatch setRecordedTime = {setRecordedTime}/>
-      <Times recordedTime = {recordedTime}  />
+      <Stopwatch recordedTimes = {recordedTimes} setRecordedTimes = {setRecordedTimes}/>
+      <Times recordedTimes = {recordedTimes}  />
     </div>
   );
 }
