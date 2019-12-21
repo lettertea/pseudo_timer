@@ -1,39 +1,75 @@
 import React, {Component} from "react";
 
+const eightSeconds = new Audio(require("../audio/female/eight_seconds.ogg"));
+const twelveSeconds = new Audio(require("../audio/female/twelve_seconds.ogg"));
+const inspecting = new Audio(require("../audio/female/inspecting.ogg"));
+
 class Stopwatch extends Component {
   state = {
-    runningTime: 0
+    runningTime: 0,
+    isInspecting: false,
+    inspectionTime: 15
   };
 
   isHoldingSpaceAtStop = false;
   isTiming = false;
   timer;
-  displayedTimeRef = React.createRef()
+  inspectionCountdown;
+  displayedTimeRef = React.createRef();
 
   componentDidMount() {
     document.body.onkeyup = this.handleOnKeyUp;
     document.body.onkeypress = this.handleKeyDown;
   }
 
-  handleOnKeyUp = e => {
-    if (e.key === " ") {
-      if (!this.isTiming && !this.isHoldingSpaceAtStop) {
-        const startTime = Date.now();
-        this.timer = setInterval(() => {
-          this.setState({runningTime: Date.now() - startTime});
-        }, 10);
 
-        this.isTiming = true;
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.isInspecting) {
+      if (prevState.inspectionTime === 8) {
+        eightSeconds.play();
+      } else if (prevState.inspectionTime === 4) {
+        twelveSeconds.play();
       }
-      // Prevents stopwatch from starting again after finishing
-      this.isHoldingSpaceAtStop = false;
-    }
-    e.preventDefault();
+
+      if (prevState.isInspecting !== this.state.isInspecting){
+      this.inspectionCountdown = setInterval(() => {
+        this.setState((pastState) => ({inspectionTime: pastState.inspectionTime - 1}));
+      }, 1000);
+      inspecting.play();
+    }}
+
 
   }
 
 
-  handleKeyDown = (e) => {
+  handleOnKeyUp = e => {
+
+
+    if (e.key === " ") {
+      if (!this.isTiming && !this.isHoldingSpaceAtStop) {
+
+        if (this.state.isInspecting) {
+          const startTime = Date.now();
+          this.timer = setInterval(() => {
+            this.setState({runningTime: Date.now() - startTime});
+          }, 10);
+
+          this.isTiming = true;
+          clearInterval(this.inspectionCountdown);
+
+        }
+        this.setState((prevState => ({isInspecting: !prevState.isInspecting,inspectionTime: 15})));
+      }
+      // Prevents stopwatch from starting again after finishing
+      this.isHoldingSpaceAtStop = false;
+    }
+
+    e.preventDefault();
+
+  };
+
+
+  handleKeyDown = e => {
     if (e.key === " ") {
       if (this.isTiming) {
         clearInterval(this.timer);
@@ -45,9 +81,6 @@ class Stopwatch extends Component {
     e.preventDefault();
   };
 
-  componentWillUnmount() {
-    clearInterval(this.timer);
-  }
 
   displayTime(milliseconds) {
     const minutes = Math.trunc(milliseconds / 60000);
@@ -67,7 +100,8 @@ class Stopwatch extends Component {
   render() {
     return (
       <div>
-        <p ref={this.displayedTimeRef}>{this.displayTime(this.state.runningTime)}</p>
+        <p
+          ref={this.displayedTimeRef}>{this.state.isInspecting ? this.state.inspectionTime : this.displayTime(this.state.runningTime)}</p>
       </div>
     );
   }
