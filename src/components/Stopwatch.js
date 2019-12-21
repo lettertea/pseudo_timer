@@ -1,8 +1,12 @@
 import React, {Component} from "react";
+import tts from "basic-tts";
+
+const speaker = tts.createSpeaker({rate:1.2});
 
 const eightSeconds = new Audio(require("../audio/female/eight_seconds.ogg"));
 const twelveSeconds = new Audio(require("../audio/female/twelve_seconds.ogg"));
 const inspecting = new Audio(require("../audio/female/inspecting.ogg"));
+
 
 class Stopwatch extends Component {
   state = {
@@ -31,20 +35,17 @@ class Stopwatch extends Component {
         twelveSeconds.play();
       }
 
-      if (prevState.isInspecting !== this.state.isInspecting){
-      this.inspectionCountdown = setInterval(() => {
-        this.setState((pastState) => ({inspectionTime: pastState.inspectionTime - 1}));
-      }, 1000);
-      inspecting.play();
-    }}
-
+      if (prevState.isInspecting !== this.state.isInspecting) {
+        this.inspectionCountdown = setInterval(() => {
+          this.setState((pastState) => ({inspectionTime: pastState.inspectionTime - 1}));
+        }, 1000);
+        inspecting.play();
+      }
+    }
 
   }
 
-
   handleOnKeyUp = e => {
-
-
     if (e.key === " ") {
       if (!this.isTiming && !this.isHoldingSpaceAtStop) {
 
@@ -58,7 +59,7 @@ class Stopwatch extends Component {
           clearInterval(this.inspectionCountdown);
 
         }
-        this.setState((prevState => ({isInspecting: !prevState.isInspecting,inspectionTime: 15})));
+        this.setState((prevState => ({isInspecting: !prevState.isInspecting, inspectionTime: 15})));
       }
       // Prevents stopwatch from starting again after finishing
       this.isHoldingSpaceAtStop = false;
@@ -76,6 +77,10 @@ class Stopwatch extends Component {
         this.isTiming = false;
         this.isHoldingSpaceAtStop = true;
         this.props.setRecordedTimes([this.displayedTimeRef.current.innerText, ...this.props.recordedTimes]);
+        const spokenTime = this.displayedTimeRef.current.innerText;
+
+
+        speaker.speak(this.displayedTimeRef.current.innerText).then(console.log).catch(console.log)
       }
     }
     e.preventDefault();
