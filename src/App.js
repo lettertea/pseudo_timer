@@ -58,8 +58,7 @@ class App extends Component {
       <div className="App">
         {this.state.scramble}
         <Stopwatch
-          recordedTimes={this.state.recordedTimes}
-          setRecordedTimes={value => this.setState({recordedTimes: value})}
+          addRecordedTimes={value => this.setState({recordedTimes: [value,...this.state.recordedTimes]})}
         />
         <Times recordedTimes={this.state.recordedTimes}/>
 
