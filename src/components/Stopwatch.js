@@ -78,8 +78,6 @@ class Stopwatch extends Component {
         this.isHoldingSpaceAtStop = true;
         this.props.setRecordedTimes([this.displayedTimeRef.current.innerText, ...this.props.recordedTimes]);
         const spokenTime = this.displayedTimeRef.current.innerText;
-
-
         speaker.speak(this.displayedTimeRef.current.innerText).then(console.log).catch(console.log)
       }
     }

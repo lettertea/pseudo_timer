@@ -12,36 +12,26 @@ function App() {
   const [recordedTimes, setRecordedTimes] = useState([]);
   const [scramble, setScramble] = useState("");
   const [wcaEvent, setWcaEvent] = React.useState("333");
-  const [tnoodleScrambler, setTnoodleScrambler] = useState();
-  const [selectedPuzzleType, setSelectedPuzzleType] = useState("333");
+
+  function updateScramble() {
+      if (typeof window.puzzles === "undefined") {
+        setTimeout(updateScramble, 200);
+        return;
+      }
+      setScramble(window.puzzles[wcaEvent].generateScramble());
+  }
 
   useEffect(() => {
-    function checkVariable() {
-      if (typeof window.puzzles !== "undefined") {
-        setTnoodleScrambler(window.puzzles);
-        console.log(window.puzzles);
-      } else {
-        setTimeout(checkVariable, 200);
-      }
-    }
-    checkVariable();
-  }, []);
-
-  // useEffect(() => {
-  //
-  //
-  //   setScramble(scrambler.get()[0].scramble_string);
-  // }, [recordedTimes]);
+    updateScramble()
+  }, [recordedTimes]);
 
   return (
     <div className="App">
-      {typeof tnoodleScrambler !== "undefined"
-        ? tnoodleScrambler[wcaEvent].generateScramble()
-        : "Nat"}
-
+      {scramble}
       <Stopwatch
         recordedTimes={recordedTimes}
         setRecordedTimes={setRecordedTimes}
+        setScramble={setScramble}
       />
       <Times recordedTimes={recordedTimes} />
 
