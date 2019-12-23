@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 
 import Stopwatch from "./components/Stopwatch";
 import Times from "./components/Times";
 import { ICAScrambo } from "icascrambo/dist/ICAScrambo";
 import Settings from "./components/Settings";
+
 const scrambler = new ICAScrambo();
 
 function App() {
@@ -14,16 +14,22 @@ function App() {
   const [wcaEvent, setWcaEvent] = React.useState("333");
 
   function updateScramble() {
-      if (typeof window.puzzles === "undefined") {
-        setTimeout(updateScramble, 200);
-        return;
-      }
-      setScramble(window.puzzles[wcaEvent].generateScramble());
+    if (typeof window.puzzles === "undefined") {
+      setTimeout(updateScramble, 200);
+      return;
+    }
+    setScramble(window.puzzles[wcaEvent].generateScramble());
   }
 
   useEffect(() => {
-    updateScramble()
-  }, [recordedTimes]);
+    // Probably first render
+    if (typeof window.puzzles === "undefined") {
+      // No need for timeout at first render
+      updateScramble();
+    } else {
+      setTimeout(updateScramble, 200);
+    }
+  }, [recordedTimes, wcaEvent]);
 
   return (
     <div className="App">
