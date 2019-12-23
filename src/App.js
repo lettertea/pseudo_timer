@@ -1,49 +1,72 @@
-import React, { useEffect, useState } from "react";
+import React, {Component} from "react";
 import "./App.css";
 
 import Stopwatch from "./components/Stopwatch";
 import Times from "./components/Times";
-import { ICAScrambo } from "icascrambo/dist/ICAScrambo";
+import {ICAScrambo} from "icascrambo/dist/ICAScrambo";
 import Settings from "./components/Settings";
 
 const scrambler = new ICAScrambo();
 
-function App() {
-  const [recordedTimes, setRecordedTimes] = useState([]);
-  const [scramble, setScramble] = useState("");
-  const [wcaEvent, setWcaEvent] = React.useState("333");
+class App extends Component {
+  state = {
+    recordedTimes: [],
+    scramble: "",
+    wcaEvent: "333"
+  };
 
-  function updateScramble() {
-    if (typeof window.puzzles === "undefined") {
-      setTimeout(updateScramble, 200);
-      return;
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.recordedTimes !== this.state.recordedTimes) {
+      this.updateScramble();
+    } else if (prevState.wcaEvent !== this.state.wcaEvent) {
+      this.updateScramble(true);
     }
-    setScramble(window.puzzles[wcaEvent].generateScramble());
   }
 
-  useEffect(() => {
-    // Probably first render
+  componentDidMount() {
+    this.updateScramble(true);
+  }
+
+  updateScramble(loadCurrentAndNextScramble = false) {
     if (typeof window.puzzles === "undefined") {
-      // No need for timeout at first render
-      updateScramble();
-    } else {
-      setTimeout(updateScramble, 200);
+      setTimeout(() => this.updateScramble(true), 200);
+      return;
     }
-  }, [recordedTimes, wcaEvent]);
 
-  return (
-    <div className="App">
-      {scramble}
-      <Stopwatch
-        recordedTimes={recordedTimes}
-        setRecordedTimes={setRecordedTimes}
-        setScramble={setScramble}
-      />
-      <Times recordedTimes={recordedTimes} />
+    // setTimeouts are used to make generateScramble calls asynchronous because
+    // it can take a long time to execute. The asynchronous nature allows some
+    // rendering in between calls to happen so the UI doesn't seem like it's
+    // freezing up
+    if (loadCurrentAndNextScramble) {
+      setTimeout(() => {
+        this.setState({
+          scramble: window.puzzles[this.state.wcaEvent].generateScramble()
+        });
+      });
+    } else {
+      this.setState({scramble: this.nextScramble});
+    }
+    setTimeout(() => {
+      this.nextScramble = window.puzzles[
+        this.state.wcaEvent
+        ].generateScramble();
+    });
+  }
 
-      <Settings setWcaEvent={setWcaEvent} />
-    </div>
-  );
+  render() {
+    return (
+      <div className="App">
+        {this.state.scramble}
+        <Stopwatch
+          recordedTimes={this.state.recordedTimes}
+          setRecordedTimes={value => this.setState({recordedTimes: value})}
+        />
+        <Times recordedTimes={this.state.recordedTimes}/>
+
+        <Settings setWcaEvent={value => this.setState({wcaEvent: value})}/>
+      </div>
+    );
+  }
 }
 
 export default App;
