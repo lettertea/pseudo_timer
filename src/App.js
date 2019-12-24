@@ -50,17 +50,31 @@ class App extends Component {
       this.nextScramble = window.puzzles[
         this.state.wcaEvent
         ].generateScramble();
-    });
+    },100);
+  }
+
+  addRecordedTimes(value) {
+    this.setState(prevState => {
+        const recordedTimesCopy = {...prevState.recordedTimes};
+        if (typeof prevState.recordedTimes[prevState.wcaEvent] !== "undefined") {
+          recordedTimesCopy[prevState.wcaEvent].push(value)
+        } else {
+          recordedTimesCopy[prevState.wcaEvent] = [value]
+        }
+        return {recordedTimes: recordedTimesCopy};
+      }
+    )
   }
 
   render() {
     return (
       <div className="App">
+        <div ref={this.appRef}></div>
         {this.state.scramble}
         <Stopwatch
-          addRecordedTimes={value => this.setState({recordedTimes: [value,...this.state.recordedTimes]})}
+          addRecordedTimes={this.addRecordedTimes.bind(this)}
         />
-        <Times recordedTimes={this.state.recordedTimes}/>
+        <Times recordedTimes={this.state.recordedTimes[this.state.wcaEvent]}/>
 
         <Settings setWcaEvent={value => this.setState({wcaEvent: value})}/>
       </div>
