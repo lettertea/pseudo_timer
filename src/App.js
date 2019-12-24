@@ -1,6 +1,5 @@
-import React, {Component} from "react";
+import React, {Component, createRef} from "react";
 import "./App.css";
-
 import Stopwatch from "./components/Stopwatch";
 import Times from "./components/Times";
 import {ICAScrambo} from "icascrambo/dist/ICAScrambo";
@@ -12,8 +11,12 @@ class App extends Component {
   state = {
     recordedTimes: [],
     scramble: "",
-    wcaEvent: "333"
+    scrambledCubeSvg: "",
+    wcaEvent: "333",
+    scaleFactor:1
   };
+
+  appRef = createRef();
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.recordedTimes !== this.state.recordedTimes) {
@@ -37,20 +40,27 @@ class App extends Component {
     // it can take a long time to execute. The asynchronous nature allows some
     // rendering in between calls to happen so the UI doesn't seem like it's
     // freezing up
+
+
+    const parseScrambledCubeSvg = () => {
+      console.log(window.toSVG(this.state.scramble, window.puzzles[this.state.wcaEvent]))
+      this.appRef.current.innerHTML = window.toSVG(this.state.scramble, window.puzzles[this.state.wcaEvent])
+    }
+
     if (loadCurrentAndNextScramble) {
       setTimeout(() => {
         this.setState({
           scramble: window.puzzles[this.state.wcaEvent].generateScramble()
-        });
+        }, parseScrambledCubeSvg);
       });
     } else {
-      this.setState({scramble: this.nextScramble});
+      this.setState({scramble: this.nextScramble}, parseScrambledCubeSvg);
     }
     setTimeout(() => {
       this.nextScramble = window.puzzles[
         this.state.wcaEvent
         ].generateScramble();
-    },100);
+    }, 100);
   }
 
   addRecordedTimes(value) {
@@ -69,14 +79,20 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <div ref={this.appRef}></div>
         {this.state.scramble}
         <Stopwatch
           addRecordedTimes={this.addRecordedTimes.bind(this)}
         />
         <Times recordedTimes={this.state.recordedTimes[this.state.wcaEvent]}/>
 
-        <Settings setWcaEvent={value => this.setState({wcaEvent: value})}/>
+        <div ref={this.appRef} style={ {
+          transform: `scale(${this.state.scaleFactor})`,
+          padding: "65px 49px"
+        }}></div>
+
+        <Settings setWcaEvent={value => this.setState({wcaEvent: value})}
+                  setScaleFactor={value=>this.setState({scaleFactor:value})}
+        />
       </div>
     );
   }
