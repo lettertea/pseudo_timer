@@ -46,6 +46,8 @@ class Stopwatch extends Component {
   }
 
   handleOnKeyUp = e => {
+    e.preventDefault();
+
     if (e.key === " ") {
       if (!this.isTiming && !this.isHoldingSpaceAtStop) {
 
@@ -65,23 +67,23 @@ class Stopwatch extends Component {
       this.isHoldingSpaceAtStop = false;
     }
 
-    e.preventDefault();
 
   };
 
 
   handleKeyDown = e => {
+    e.preventDefault();
     if (e.key === " ") {
       if (this.isTiming) {
         clearInterval(this.timer);
         this.isTiming = false;
         this.isHoldingSpaceAtStop = true;
-        this.props.addRecordedTimes(this.displayedTimeRef.current.innerText);
         const spokenTime = this.displayedTimeRef.current.innerText;
-        speaker.speak(this.displayedTimeRef.current.innerText).then(console.log).catch(console.log)
+        speaker.speak(spokenTime).then(console.log).catch(console.log)
+        this.props.addRecordedTimes(this.displayedTimeRef.current.innerText);
+
       }
     }
-    e.preventDefault();
   };
 
 
