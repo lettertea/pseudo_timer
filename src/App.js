@@ -1,5 +1,4 @@
-import React, {Component, createRef} from "react";
-import "./App.css";
+import React, { Component, createRef } from "react";
 import Stopwatch from "./components/Stopwatch";
 import Times from "./components/Times";
 import {ICAScrambo} from "icascrambo/dist/ICAScrambo";
