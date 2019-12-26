@@ -40,7 +40,7 @@ export default function(props) {
   };
 
   return (
-    <FormControl>
+    <FormControl  style={{minWidth: 120}}>
       <InputLabel >Event</InputLabel>
       <Select
         open={open}
