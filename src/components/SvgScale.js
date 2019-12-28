@@ -7,9 +7,6 @@ import Slider from "@material-ui/core/Slider";
 const useSliderStyles = makeStyles({
   root: {
     width: 250
-  },
-  input: {
-    width: 42
   }
 });
 
@@ -24,7 +21,7 @@ export default function(props) {
 
   return (
     <div className={classes.root}>
-      <Typography id="input-slider" gutterBottom>
+      <Typography gutterBottom>
         SVG Scale
       </Typography>
       <Grid container spacing={2} alignItems="center">
