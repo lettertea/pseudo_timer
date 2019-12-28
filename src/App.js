@@ -54,9 +54,6 @@ class App extends Component {
     // freezing up
 
     const parseScrambledCubeSvg = () => {
-      console.log(
-        window.toSVG(this.state.scramble, window.puzzles[this.state.wcaEvent])
-      );
       this.appRef.current.innerHTML = window.toSVG(
         this.state.scramble,
         window.puzzles[this.state.wcaEvent]
