@@ -1,15 +1,13 @@
-import React, { Component, createRef } from "react";
+import React, {Component, createRef} from "react";
 import Stopwatch from "./components/Stopwatch";
-import Times from "./components/Times";
-import Settings from "./components/Settings";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
-import {createMuiTheme, makeStyles} from '@material-ui/core/styles';
+import {createMuiTheme} from '@material-ui/core/styles';
 import deepPurple from '@material-ui/core/colors/deepPurple';
 import green from '@material-ui/core/colors/green';
 import {ThemeProvider} from "@material-ui/styles";
-import Paper from "@material-ui/core/Paper";
 import StyledPaper from "./components/StyledPaper";
+import BottomNav from "./components/BottomNav";
 
 const theme = createMuiTheme({
   palette: {
@@ -75,40 +73,38 @@ class App extends Component {
         );
       });
     } else {
-      this.setState({ scramble: this.nextScramble }, parseScrambledCubeSvg);
+      this.setState({scramble: this.nextScramble}, parseScrambledCubeSvg);
     }
     setTimeout(() => {
       this.nextScramble = window.puzzles[
         this.state.wcaEvent
-      ].generateScramble();
+        ].generateScramble();
     }, 100);
   }
 
   addRecordedTimes(value) {
     this.setState(prevState => {
-      const recordedTimesCopy = { ...prevState.recordedTimes };
+      const recordedTimesCopy = {...prevState.recordedTimes};
       if (typeof prevState.recordedTimes[prevState.wcaEvent] !== "undefined") {
         recordedTimesCopy[prevState.wcaEvent].push(value);
       } else {
         recordedTimesCopy[prevState.wcaEvent] = [value];
       }
-      return { recordedTimes: recordedTimesCopy };
+      return {recordedTimes: recordedTimesCopy};
     });
   }
 
   render() {
     return (
       <ThemeProvider theme={theme}>
-      <Container>
-        <Grid container spacing={24} direction="column">
-          {this.state.scramble}
+        <Container>
+          <Grid container spacing={24} direction="column">
+            {this.state.scramble}
 
-          <StyledPaper>
-            <Stopwatch addRecordedTimes={this.addRecordedTimes.bind(this)} />
-          </StyledPaper>
-            <Times
-              recordedTimes={this.state.recordedTimes[this.state.wcaEvent]}
-            />
+            <StyledPaper>
+              <Stopwatch addRecordedTimes={this.addRecordedTimes.bind(this)}/>
+            </StyledPaper>
+
             <div
               ref={this.appRef}
               style={{
@@ -117,12 +113,13 @@ class App extends Component {
                 padding: "65px 49px"
               }}
             ></div>
-            <Settings
-              setWcaEvent={value => this.setState({ wcaEvent: value })}
-              setScaleFactor={value => this.setState({ scaleFactor: value })}
+            <BottomNav
+              recordedTimes={this.state.recordedTimes[this.state.wcaEvent]}
+              setWcaEvent={value => this.setState({wcaEvent: value})}
+              setScaleFactor={value => this.setState({scaleFactor: value})}
             />
-        </Grid>
-      </Container>
+          </Grid>
+        </Container>
       </ThemeProvider>
     );
   }
