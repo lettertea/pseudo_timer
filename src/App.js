@@ -4,6 +4,22 @@ import Times from "./components/Times";
 import Settings from "./components/Settings";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
+import {createMuiTheme, makeStyles} from '@material-ui/core/styles';
+import deepPurple from '@material-ui/core/colors/deepPurple';
+import green from '@material-ui/core/colors/green';
+import {ThemeProvider} from "@material-ui/styles";
+import Paper from "@material-ui/core/Paper";
+import StyledPaper from "./components/StyledPaper";
+
+const theme = createMuiTheme({
+  palette: {
+    primary: deepPurple,
+    secondary: green,
+  },
+  status: {
+    danger: 'orange',
+  },
+});
 
 class App extends Component {
   state = {
@@ -82,18 +98,17 @@ class App extends Component {
 
   render() {
     return (
+      <ThemeProvider theme={theme}>
       <Container>
         <Grid container spacing={24} direction="column">
-          <Grid item>{this.state.scramble}</Grid>
-          <Grid item>
+          {this.state.scramble}
+
+          <StyledPaper>
             <Stopwatch addRecordedTimes={this.addRecordedTimes.bind(this)} />
-          </Grid>
-          <Grid item>
+          </StyledPaper>
             <Times
               recordedTimes={this.state.recordedTimes[this.state.wcaEvent]}
             />
-          </Grid>
-          <Grid item>
             <div
               ref={this.appRef}
               style={{
@@ -102,15 +117,13 @@ class App extends Component {
                 padding: "65px 49px"
               }}
             ></div>
-          </Grid>
-          <Grid item>
             <Settings
               setWcaEvent={value => this.setState({ wcaEvent: value })}
               setScaleFactor={value => this.setState({ scaleFactor: value })}
             />
-          </Grid>
         </Grid>
       </Container>
+      </ThemeProvider>
     );
   }
 }

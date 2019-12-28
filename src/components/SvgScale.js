@@ -1,17 +1,9 @@
-import {makeStyles} from "@material-ui/core/styles";
 import React from "react";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Slider from "@material-ui/core/Slider";
 
-const useSliderStyles = makeStyles({
-  root: {
-    width: 250
-  }
-});
-
 export default function(props) {
-  const classes = useSliderStyles();
   const [value, setValue] = React.useState(30);
 
   const handleSliderChange = (event, newValue) => {
@@ -20,8 +12,8 @@ export default function(props) {
   };
 
   return (
-    <div className={classes.root}>
-      <Typography gutterBottom>
+    <div style={{ width: 250 }}>
+      <Typography gutterBottom color={"textSecondary"}>
         SVG Scale
       </Typography>
       <Grid container spacing={2} alignItems="center">
