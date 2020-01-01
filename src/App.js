@@ -17,7 +17,7 @@ const theme = createMuiTheme({
 
 class App extends Component {
   state = {
-    recordedTimes: [],
+    recordedTimes: {},
     scramble: "",
     scrambledCubeSvg: "",
     wcaEvent: "333",
@@ -78,11 +78,8 @@ class App extends Component {
   addRecordedTimes(value) {
     this.setState(prevState => {
       const recordedTimesCopy = { ...prevState.recordedTimes };
-      if (typeof prevState.recordedTimes[prevState.wcaEvent] !== "undefined") {
         recordedTimesCopy[prevState.wcaEvent].push(value);
-      } else {
-        recordedTimesCopy[prevState.wcaEvent] = [value];
-      }
+
       return { recordedTimes: recordedTimesCopy };
     });
   }
@@ -99,7 +96,7 @@ class App extends Component {
               ref={this.appRef}
               style={{
                 transform: `scale(${this.state.scaleFactor})`,
-                "transform-origin": "center center",
+                transformOrigin: "center center",
                 padding: "65px 49px"
               }}
             ></div>
