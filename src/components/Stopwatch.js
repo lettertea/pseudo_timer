@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import tts from "basic-tts";
+import Typography from "@material-ui/core/Typography";
 
 const speaker = tts.createSpeaker({rate:1.2});
 
@@ -105,8 +106,8 @@ class Stopwatch extends Component {
   render() {
     return (
       <div>
-        <p
-          ref={this.displayedTimeRef}>{this.state.isInspecting ? this.state.inspectionTime : this.displayTime(this.state.runningTime)}</p>
+        <Typography variant={"h3"} color={"textPrimary"}
+          ref={this.displayedTimeRef}>{this.state.isInspecting ? this.state.inspectionTime : this.displayTime(this.state.runningTime)}</Typography>
       </div>
     );
   }

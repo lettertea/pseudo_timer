@@ -75,7 +75,6 @@ export default props => {
 
   return (
     <Grid container spacing={3} direction={"column"}>
-      <Grid item>
         <BottomNavigation
           value={shownComponentIndex}
           onChange={(event, newValue) => {
@@ -90,8 +89,7 @@ export default props => {
           <BottomNavigationAction label="Settings" icon={<SettingsIcon />} />
           <BottomNavigationAction label="Hidden" icon={<VisibilityOffIcon />} />
         </BottomNavigation>
-      </Grid>
-      <Grid item>{shownComponent}</Grid>
+      <div>{shownComponent}</div>
     </Grid>
   );
 };
