@@ -46,6 +46,7 @@ export default function Times(props) {
 
       rows.push(
         <TableRow key={i}>
+          <TableCell>{i + 1}</TableCell>
           <TableCell component="th" scope="row">
             {newRow.date}
           </TableCell>
@@ -65,6 +66,7 @@ export default function Times(props) {
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
+            <TableCell>No.</TableCell>
             <TableCell>Date</TableCell>
             <TableCell align="right">Time</TableCell>
             <TableCell align="right">Average 3 of 5</TableCell>
