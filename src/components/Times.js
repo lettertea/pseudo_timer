@@ -10,9 +10,9 @@ import Paper from '@material-ui/core/Paper';
 import msToTime from "../msToTime";
 
 const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-  },
+  tableContainer: {
+    height:340,
+  }
 });
 
 function createData(name, calories, fat, carbs, protein) {
@@ -62,8 +62,8 @@ export default function Times(props) {
 
 
   return (
-    <TableContainer component={Paper} style={{height:440}}>
-      <Table className={classes.table} aria-label="simple table">
+    <TableContainer component={Paper} className={classes.tableContainer}>
+      <Table>
         <TableHead>
           <TableRow>
             <TableCell>No.</TableCell>

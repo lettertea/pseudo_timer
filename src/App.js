@@ -6,12 +6,9 @@ import {createMuiTheme} from "@material-ui/core/styles";
 import {ThemeProvider} from "@material-ui/styles";
 import BottomNav from "./components/BottomNav";
 import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import StyledPaper from "./components/StyledPaper";
 
-const theme = createMuiTheme({
-  typography: {
-    fontSize: 18
-  }
-});
 
 class App extends Component {
   state = {
@@ -19,7 +16,7 @@ class App extends Component {
     scramble: "",
     scrambledCubeSvg: "",
     wcaEvent: "333",
-    scaleFactor: 1
+    scaleFactor: 2
   };
 
   appRef = createRef();
@@ -37,6 +34,8 @@ class App extends Component {
   }
 
   updateScramble(loadCurrentAndNextScramble = false) {
+    // 333oh uses the same scramble algorithm as 333
+    let parsedWcaEvent = this.state.wcaEvent === "333oh" ? "333" : this.state.wcaEvent;
     if (typeof window.puzzles === "undefined") {
       setTimeout(() => this.updateScramble(true), 200);
       return;
@@ -50,7 +49,7 @@ class App extends Component {
     const parseScrambledCubeSvg = () => {
       this.appRef.current.innerHTML = window.toSVG(
         this.state.scramble,
-        window.puzzles[this.state.wcaEvent]
+        window.puzzles[parsedWcaEvent]
       );
     };
 
@@ -58,7 +57,7 @@ class App extends Component {
       setTimeout(() => {
         this.setState(
           {
-            scramble: window.puzzles[this.state.wcaEvent].generateScramble()
+            scramble: window.puzzles[parsedWcaEvent].generateScramble()
           },
           parseScrambledCubeSvg
         );
@@ -68,7 +67,7 @@ class App extends Component {
     }
     setTimeout(() => {
       this.nextScramble = window.puzzles[
-        this.state.wcaEvent
+        parsedWcaEvent
         ].generateScramble();
     }, 100);
   }
@@ -76,7 +75,7 @@ class App extends Component {
   addRecordedTimes(value) {
     this.setState(prevState => {
       const recordedTimesCopy = {...prevState.recordedTimes};
-      if (recordedTimesCopy[prevState.wcaEvent]){
+      if (recordedTimesCopy[prevState.wcaEvent]) {
         recordedTimesCopy[prevState.wcaEvent].push(value);
       } else {
         recordedTimesCopy[prevState.wcaEvent] = [value];
@@ -88,28 +87,39 @@ class App extends Component {
 
   render() {
     return (
-      <ThemeProvider theme={theme}>
         <Container>
-          <Grid container spacing={24} direction="column" alignItems={"center"}>
-            <Typography variant={"body1"} color={"textSecondary"}>{this.state.scramble}</Typography>
+          <Grid container direction="column" alignItems={"center"}>
+
             <Stopwatch addRecordedTimes={this.addRecordedTimes.bind(this)}/>
 
-            <div
-              ref={this.appRef}
-              style={{
-                transform: `scale(${this.state.scaleFactor})`,
-                transformOrigin: "center center",
-                padding: "65px 49px"
-              }}
-            ></div>
-            <BottomNav
-              recordedTimes={this.state.recordedTimes[this.state.wcaEvent]}
-              setWcaEvent={value => this.setState({wcaEvent: value})}
-              setScaleFactor={value => this.setState({scaleFactor: value})}
-            />
+            <Grid container spacing={6}>
+              <Grid item xs={7}>
+                <BottomNav
+                  recordedTimes={this.state.recordedTimes[this.state.wcaEvent]}
+                  wcaEvent={this.state.wcaEvent}
+                  setWcaEvent={value => this.setState({wcaEvent: value})}
+                  scaleFactor={this.state.scaleFactor}
+                  setScaleFactor={value => this.setState({scaleFactor: value})}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <StyledPaper style={{
+
+                }}>
+                  <Typography variant={"body1"} color={"textSecondary"}>{this.state.scramble}</Typography>
+                  <div
+                    ref={this.appRef}
+                    style={{
+                      transform: `scale(${this.state.scaleFactor})`,
+                      transformOrigin: "center left",
+                      padding: "60px 4px"
+                    }}
+                  />
+                </StyledPaper>
+              </Grid>
+            </Grid>
           </Grid>
         </Container>
-      </ThemeProvider>
     );
   }
 }

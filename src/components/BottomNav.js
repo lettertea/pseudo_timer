@@ -13,7 +13,9 @@ export default props => {
   const COMPONENTS = [
     <Times recordedTimes={props.recordedTimes}/>,
     <Settings
+      wcaEvent={props.wcaEvent}
       setWcaEvent={props.setWcaEvent}
+      scaleFactor={props.scaleFactor}
       setScaleFactor={props.setScaleFactor}
     />,
     null
@@ -22,8 +24,9 @@ export default props => {
   const shownComponent = COMPONENTS[shownComponentIndex];
 
   return (
-    <Grid container spacing={3} direction={"column"}>
-      <BottomNavigation
+    <Grid container direction={"column"} >
+
+    <BottomNavigation
         value={shownComponentIndex}
         onChange={(event, newValue) => {
           setShownComponentIndex(newValue);

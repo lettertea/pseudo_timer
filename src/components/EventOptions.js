@@ -12,7 +12,7 @@ const WCA_EVENTS = [
   { name: "6x6x6", tnoodleName: "666" },
   { name: "7x7x7", tnoodleName: "777" },
   { name: "3x3x3 BLD", tnoodleName: "333ni" },
-  { name: "3x3x3 OH", tnoodleName: "333" },
+  { name: "3x3x3 OH", tnoodleName: "333oh" },
   { name: "Clock", tnoodleName: "clock" },
   { name: "Megaminx", tnoodleName: "minx" },
   { name: "Pyraminx", tnoodleName: "pyram" },
@@ -24,7 +24,7 @@ const WCA_EVENTS = [
 
 export default function(props) {
   const [open, setOpen] = React.useState(false);
-  const [selectedMenu, setSelectedMenu] = React.useState(0);
+  const [selectedMenu, setSelectedMenu] = React.useState(WCA_EVENTS.map(item => item.tnoodleName).indexOf(props.wcaEvent));
 
   const handleChange = event => {
     setSelectedMenu(event.target.value);

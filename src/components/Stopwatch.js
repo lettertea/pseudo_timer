@@ -95,7 +95,7 @@ class Stopwatch extends Component {
   render() {
     return (
       <div>
-        <Typography variant={"h3"} color={"textPrimary"}
+        <Typography variant={"h1"} color={"textPrimary"}
           ref={this.displayedTimeRef}>{this.state.isInspecting ? this.state.inspectionTime : msToTime(this.state.runningTime)}</Typography>
       </div>
     );
