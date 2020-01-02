@@ -1,11 +1,9 @@
-import React, { Component, createRef } from "react";
+import React, {Component, createRef} from "react";
 import Stopwatch from "./components/Stopwatch";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
-import { createMuiTheme } from "@material-ui/core/styles";
-import deepPurple from "@material-ui/core/colors/deepPurple";
-import green from "@material-ui/core/colors/green";
-import { ThemeProvider } from "@material-ui/styles";
+import {createMuiTheme} from "@material-ui/core/styles";
+import {ThemeProvider} from "@material-ui/styles";
 import BottomNav from "./components/BottomNav";
 import Typography from "@material-ui/core/Typography";
 
@@ -66,22 +64,26 @@ class App extends Component {
         );
       });
     } else {
-      this.setState({ scramble: this.nextScramble }, parseScrambledCubeSvg);
+      this.setState({scramble: this.nextScramble}, parseScrambledCubeSvg);
     }
     setTimeout(() => {
       this.nextScramble = window.puzzles[
         this.state.wcaEvent
-      ].generateScramble();
+        ].generateScramble();
     }, 100);
   }
 
   addRecordedTimes(value) {
     this.setState(prevState => {
-      const recordedTimesCopy = { ...prevState.recordedTimes };
+      const recordedTimesCopy = {...prevState.recordedTimes};
+      if (recordedTimesCopy[prevState.wcaEvent]){
         recordedTimesCopy[prevState.wcaEvent].push(value);
-
-      return { recordedTimes: recordedTimesCopy };
-    });
+      } else {
+        recordedTimesCopy[prevState.wcaEvent] = [value];
+      }
+      return {recordedTimes: recordedTimesCopy};
+    })
+    ;
   }
 
   render() {
@@ -90,7 +92,7 @@ class App extends Component {
         <Container>
           <Grid container spacing={24} direction="column" alignItems={"center"}>
             <Typography variant={"body1"} color={"textSecondary"}>{this.state.scramble}</Typography>
-            <Stopwatch addRecordedTimes={this.addRecordedTimes.bind(this)} />
+            <Stopwatch addRecordedTimes={this.addRecordedTimes.bind(this)}/>
 
             <div
               ref={this.appRef}
@@ -102,8 +104,8 @@ class App extends Component {
             ></div>
             <BottomNav
               recordedTimes={this.state.recordedTimes[this.state.wcaEvent]}
-              setWcaEvent={value => this.setState({ wcaEvent: value })}
-              setScaleFactor={value => this.setState({ scaleFactor: value })}
+              setWcaEvent={value => this.setState({wcaEvent: value})}
+              setScaleFactor={value => this.setState({scaleFactor: value})}
             />
           </Grid>
         </Container>

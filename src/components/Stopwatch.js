@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import tts from "basic-tts";
 import Typography from "@material-ui/core/Typography";
+import msToTime from "../msToTime";
 
 const speaker = tts.createSpeaker({rate:1.2});
 
@@ -81,33 +82,21 @@ class Stopwatch extends Component {
         this.isHoldingSpaceAtStop = true;
         const spokenTime = this.displayedTimeRef.current.innerText;
         speaker.speak(spokenTime).then(console.log).catch(console.log)
-        this.props.addRecordedTimes(this.displayedTimeRef.current.innerText);
+        this.props.addRecordedTimes(this.state.runningTime);
 
       }
     }
   };
 
 
-  displayTime(milliseconds) {
-    const minutes = Math.trunc(milliseconds / 60000);
-    let seconds = Math.trunc(milliseconds / 1000) % 60;
-    let centiseconds = Math.trunc(milliseconds / 10) % 100;
 
-    // Add leading zeros
-    centiseconds = ("0" + centiseconds).substr(-2);
-    if (minutes > 0 && seconds < 10) {
-      seconds = "0" + seconds;
-    }
-
-    return minutes === 0 ? `${seconds}.${centiseconds}` : `${minutes}:${seconds}.${centiseconds}`;
-  }
 
 
   render() {
     return (
       <div>
         <Typography variant={"h3"} color={"textPrimary"}
-          ref={this.displayedTimeRef}>{this.state.isInspecting ? this.state.inspectionTime : this.displayTime(this.state.runningTime)}</Typography>
+          ref={this.displayedTimeRef}>{this.state.isInspecting ? this.state.inspectionTime : msToTime(this.state.runningTime)}</Typography>
       </div>
     );
   }
