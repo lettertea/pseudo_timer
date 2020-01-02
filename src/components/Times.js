@@ -62,7 +62,7 @@ export default function Times(props) {
 
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} style={{height:440}}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
