@@ -87,12 +87,16 @@ class App extends Component {
 
   render() {
     return (
-      <Container>
+      <Container style={{
+        "margin-top": "calc(5% + 50px)"
+      }}>
         <Grid container direction="column" alignItems={"center"}>
 
           <Stopwatch addRecordedTimes={this.addRecordedTimes.bind(this)}/>
           <Typography variant={"body1"}
-                      color={"textSecondary"}>{this.state.scramble ? this.state.scramble : "Loading Scramble..."}</Typography>
+                      color={"textSecondary"}
+                      style={{"margin-bottom": 100}}>{this.state.scramble ? this.state.scramble : "Loading Scramble..."}</Typography>
+
 
           <Grid container spacing={4}>
             <Grid item xs={8}>
