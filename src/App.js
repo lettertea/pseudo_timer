@@ -2,11 +2,8 @@ import React, {Component, createRef} from "react";
 import Stopwatch from "./components/Stopwatch";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
-import {createMuiTheme} from "@material-ui/core/styles";
-import {ThemeProvider} from "@material-ui/styles";
 import BottomNav from "./components/BottomNav";
 import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
 import StyledPaper from "./components/StyledPaper";
 
 
@@ -19,7 +16,7 @@ class App extends Component {
     scaleFactor: 2
   };
 
-  appRef = createRef();
+  svgRef = createRef();
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.recordedTimes !== this.state.recordedTimes) {
@@ -47,7 +44,7 @@ class App extends Component {
     // freezing up
 
     const parseScrambledCubeSvg = () => {
-      this.appRef.current.innerHTML = window.toSVG(
+      this.svgRef.current.innerHTML = window.toSVG(
         this.state.scramble,
         window.puzzles[parsedWcaEvent]
       );
@@ -55,7 +52,7 @@ class App extends Component {
 
     if (loadCurrentAndNextScramble) {
       // Set scramble to empty to notify users the scramble is loading
-      this.setState({scramble:""});
+      this.setState({scramble: ""});
 
       setTimeout(() => {
         this.setState(
@@ -94,10 +91,11 @@ class App extends Component {
         <Grid container direction="column" alignItems={"center"}>
 
           <Stopwatch addRecordedTimes={this.addRecordedTimes.bind(this)}/>
-          <Typography variant={"body1"} color={"textSecondary"}>{this.state.scramble ? this.state.scramble : "Loading Scramble..."}</Typography>
+          <Typography variant={"body1"}
+                      color={"textSecondary"}>{this.state.scramble ? this.state.scramble : "Loading Scramble..."}</Typography>
 
-          <Grid container spacing={6}>
-            <Grid item xs={7}>
+          <Grid container spacing={4}>
+            <Grid item xs={8}>
               <BottomNav
                 recordedTimes={this.state.recordedTimes[this.state.wcaEvent]}
                 wcaEvent={this.state.wcaEvent}
@@ -107,15 +105,16 @@ class App extends Component {
               />
             </Grid>
             <Grid item xs={4}>
-              <StyledPaper style={{
-
+              {/* Hardcode margin top to align with contents of BottomNav */}
+              {/* Probably not best practice, but I'm getting lazy. */}
+              <StyledPaper height={340} style={{
+                "margin-top": "56px",
               }}>
                 <div
-                  ref={this.appRef}
+                  ref={this.svgRef}
                   style={{
                     transform: `scale(${this.state.scaleFactor})`,
-                    transformOrigin: "center left",
-                    padding: "60px 4px"
+                    transformOrigin: "center center",
                   }}
                 />
               </StyledPaper>
