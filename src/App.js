@@ -54,6 +54,9 @@ class App extends Component {
     };
 
     if (loadCurrentAndNextScramble) {
+      // Set scramble to empty to notify users the scramble is loading
+      this.setState({scramble:""});
+
       setTimeout(() => {
         this.setState(
           {
@@ -87,39 +90,39 @@ class App extends Component {
 
   render() {
     return (
-        <Container>
-          <Grid container direction="column" alignItems={"center"}>
+      <Container>
+        <Grid container direction="column" alignItems={"center"}>
 
-            <Stopwatch addRecordedTimes={this.addRecordedTimes.bind(this)}/>
+          <Stopwatch addRecordedTimes={this.addRecordedTimes.bind(this)}/>
+          <Typography variant={"body1"} color={"textSecondary"}>{this.state.scramble ? this.state.scramble : "Loading Scramble..."}</Typography>
 
-            <Grid container spacing={6}>
-              <Grid item xs={7}>
-                <BottomNav
-                  recordedTimes={this.state.recordedTimes[this.state.wcaEvent]}
-                  wcaEvent={this.state.wcaEvent}
-                  setWcaEvent={value => this.setState({wcaEvent: value})}
-                  scaleFactor={this.state.scaleFactor}
-                  setScaleFactor={value => this.setState({scaleFactor: value})}
+          <Grid container spacing={6}>
+            <Grid item xs={7}>
+              <BottomNav
+                recordedTimes={this.state.recordedTimes[this.state.wcaEvent]}
+                wcaEvent={this.state.wcaEvent}
+                setWcaEvent={value => this.setState({wcaEvent: value})}
+                scaleFactor={this.state.scaleFactor}
+                setScaleFactor={value => this.setState({scaleFactor: value})}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <StyledPaper style={{
+
+              }}>
+                <div
+                  ref={this.appRef}
+                  style={{
+                    transform: `scale(${this.state.scaleFactor})`,
+                    transformOrigin: "center left",
+                    padding: "60px 4px"
+                  }}
                 />
-              </Grid>
-              <Grid item xs={4}>
-                <StyledPaper style={{
-
-                }}>
-                  <Typography variant={"body1"} color={"textSecondary"}>{this.state.scramble}</Typography>
-                  <div
-                    ref={this.appRef}
-                    style={{
-                      transform: `scale(${this.state.scaleFactor})`,
-                      transformOrigin: "center left",
-                      padding: "60px 4px"
-                    }}
-                  />
-                </StyledPaper>
-              </Grid>
+              </StyledPaper>
             </Grid>
           </Grid>
-        </Container>
+        </Grid>
+      </Container>
     );
   }
 }
