@@ -19,9 +19,10 @@ class App extends Component {
   svgRef = createRef();
 
   componentDidMount() {
-    this.updateScramble(true);
     if (localStorage.getItem("times")) {
       this.setState(JSON.parse(localStorage.getItem("times")));
+    } else {
+      this.updateScramble(true);
     }
   }
 
