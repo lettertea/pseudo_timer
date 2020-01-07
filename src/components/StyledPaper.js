@@ -7,8 +7,8 @@ export default props => {
     textAlign: "center",
     height: props.height,
     display: "flex",
-    "justify-content": "center",
-    "align-items": "center",
+    justifyContent: "center",
+    alignItems: "center",
     ...props.style
   }}>{props.children}</Paper>;
 };
