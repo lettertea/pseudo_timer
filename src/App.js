@@ -18,16 +18,20 @@ class App extends Component {
 
   svgRef = createRef();
 
+  componentDidMount() {
+    this.updateScramble(true);
+    if (localStorage.getItem("times")) {
+      this.setState(JSON.parse(localStorage.getItem("times")));
+    }
+  }
+
+
   componentDidUpdate(prevProps, prevState) {
     if (prevState.recordedTimes !== this.state.recordedTimes) {
       this.updateScramble();
     } else if (prevState.wcaEvent !== this.state.wcaEvent) {
       this.updateScramble(true);
     }
-  }
-
-  componentDidMount() {
-    this.updateScramble(true);
   }
 
   updateScramble(loadCurrentAndNextScramble = false) {
@@ -81,7 +85,11 @@ class App extends Component {
       } else {
         recordedTimesCopy[prevState.wcaEvent] = [recordedTimeInfo];
       }
-      return {recordedTimes: recordedTimesCopy};
+
+      const result = {recordedTimes: recordedTimesCopy};
+
+      localStorage.setItem("times", JSON.stringify(result));
+      return result;
     })
     ;
   }
@@ -96,7 +104,7 @@ class App extends Component {
           <Stopwatch addRecordedTimes={this.addRecordedTimes.bind(this)}/>
           <Typography variant={"body1"}
                       color={"textSecondary"}
-                      style={{"margin-bottom": 80}}>{this.state.scramble ? this.state.scramble : "Loading Scramble..."}</Typography>
+                      style={{"margin-bottom": 80}}>{this.state.scramble || "Loading Scramble..."}</Typography>
 
 
           <Grid container spacing={4}>
