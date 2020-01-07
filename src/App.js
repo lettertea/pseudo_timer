@@ -74,11 +74,12 @@ class App extends Component {
 
   addRecordedTimes(value) {
     this.setState(prevState => {
+      const recordedTimeInfo = {time: value, scramble: prevState.scramble, date: new Date().toLocaleString("en-us")}
       const recordedTimesCopy = {...prevState.recordedTimes};
       if (recordedTimesCopy[prevState.wcaEvent]) {
-        recordedTimesCopy[prevState.wcaEvent].push(value);
+        recordedTimesCopy[prevState.wcaEvent].push(recordedTimeInfo);
       } else {
-        recordedTimesCopy[prevState.wcaEvent] = [value];
+        recordedTimesCopy[prevState.wcaEvent] = [recordedTimeInfo];
       }
       return {recordedTimes: recordedTimesCopy};
     })

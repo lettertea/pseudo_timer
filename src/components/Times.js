@@ -1,5 +1,4 @@
 import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -8,20 +7,12 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import msToTime from "../msToTime";
-
-const useStyles = makeStyles({
-  tableContainer: {
-    height:340,
-  }
-});
-
-function createData(name, calories, fat, carbs, protein) {
-  return {name, calories, fat, carbs, protein};
-}
+import Tooltip from "@material-ui/core/Tooltip";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 
 
 export default function Times(props) {
-  const classes = useStyles();
 
   function createRows() {
     if (!props.recordedTimes) {
@@ -31,29 +22,32 @@ export default function Times(props) {
 
     const rows = [];
     for (let i = props.recordedTimes.length - 1; i >= 0; --i) {
-
-      const newRow = {
-        date: new Date().toLocaleString("en-us"),
-        time: msToTime(props.recordedTimes[i]),
+      const recordedTime = props.recordedTimes[i];
+      const averages = {
         "3of5": i >= 4
-          ? msToTime(props.recordedTimes.slice(i - 4, i+1).sort((a, b) => a - b)
+          ? msToTime(props.recordedTimes.slice(i - 4, i + 1).sort((a, b) => a.time - b.time)
             .slice(1, 4)
-            .reduce((a, b) => a + b, 0) / 3)
+            .reduce((a, b) => a + b.time, 0) / 3)
           : "",
-        ao3: i >= 2 ? msToTime(props.recordedTimes.slice(i - 2, i + 1).reduce((a, b) => a + b, 0) / 3) : "",
-        ao12: i >= 11 ? msToTime(props.recordedTimes.slice(i - 11, i + 1).reduce((a, b) => a + b, 0) / 12) : ""
+        ao3: i >= 2 ? msToTime(props.recordedTimes.slice(i - 2, i + 1).reduce((a, b) => a + b.time, 0) / 3) : "",
+        ao12: i >= 11 ? msToTime(props.recordedTimes.slice(i - 11, i + 1).reduce((a, b) => a + b.time, 0) / 12) : ""
       };
 
       rows.push(
         <TableRow key={i}>
           <TableCell>{i + 1}</TableCell>
           <TableCell component="th" scope="row">
-            {newRow.date}
+            {recordedTime.date}
           </TableCell>
-          <TableCell align="right">{newRow["time"]}</TableCell>
-          <TableCell align="right">{newRow["3of5"]}</TableCell>
-          <TableCell align="right">{newRow["ao3"]}</TableCell>
-          <TableCell align="right">{newRow["ao12"]}</TableCell>
+          <TableCell align="right">{msToTime(recordedTime["time"])}</TableCell>
+          <TableCell align="right">{averages["3of5"]}</TableCell>
+          <TableCell align="right">{averages["ao3"]}</TableCell>
+          <TableCell align="right">{averages["ao12"]}</TableCell>
+          <TableCell align="right">
+            <Tooltip title={<Typography>{recordedTime["scramble"]}</Typography>} interactive>
+              <Button>Hover</Button>
+            </Tooltip>
+          </TableCell>
         </TableRow>
       )
     }
@@ -62,7 +56,7 @@ export default function Times(props) {
 
 
   return (
-    <TableContainer component={Paper} className={classes.tableContainer}>
+    <TableContainer component={Paper} style={{height: 340}}>
       <Table>
         <TableHead>
           <TableRow>
@@ -72,6 +66,7 @@ export default function Times(props) {
             <TableCell align="right">Average 3 of 5</TableCell>
             <TableCell align="right">Average of 3</TableCell>
             <TableCell align="right">Average of 12</TableCell>
+            <TableCell align="right">Scramble</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
