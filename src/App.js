@@ -5,6 +5,7 @@ import Container from "@material-ui/core/Container";
 import BottomNav from "./components/BottomNav";
 import Typography from "@material-ui/core/Typography";
 import StyledPaper from "./components/StyledPaper";
+import {connect} from "react-redux";
 
 
 class App extends Component {
@@ -127,7 +128,7 @@ class App extends Component {
                 <div
                   ref={this.svgRef}
                   style={{
-                    transform: `scale(${this.state.scaleFactor})`,
+                    transform: `scale(${this.props.svgScale})`,
                     transformOrigin: "center center",
                   }}
                 />
@@ -140,4 +141,9 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  svgScale: state.settings
+})
+export default connect(
+  mapStateToProps
+)(App)
