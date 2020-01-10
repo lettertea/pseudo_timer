@@ -38,48 +38,6 @@ class App extends Component {
     }
   }
 
-  // updateScramble(loadCurrentAndNextScramble = false) {
-  //   // 333oh uses the same scramble algorithm as 333
-  //   let parsedWcaEvent = this.props.wcaEvent === "333oh" ? "333" : this.props.wcaEvent;
-  //
-  //   if (typeof window.puzzles === "undefined") {
-  //     setTimeout(() => this.updateScramble(true), 200);
-  //     return;
-  //   }
-  //
-  //   // setTimeouts are used to make generateScramble calls asynchronous because
-  //   // it can take a long time to execute. The asynchronous nature allows some
-  //   // rendering in between calls to happen so the UI doesn't seem like it's
-  //   // freezing up
-  //   const parseScrambledCubeSvg = () => {
-  //     this.svgRef.current.innerHTML = window.toSVG(
-  //       this.props.scramble,
-  //       window.puzzles[parsedWcaEvent]
-  //     );
-  //   };
-  //
-  //   if (loadCurrentAndNextScramble) {
-  //     // Set scramble to empty to notify users the scramble is loading
-  //     this.setState({scramble: ""});
-  //
-  //     setTimeout(() => {
-  //       this.setState(
-  //         {
-  //           scramble: window.puzzles[parsedWcaEvent].generateScramble()
-  //         },
-  //         parseScrambledCubeSvg
-  //       );
-  //     });
-  //   } else {
-  //     this.setState({scramble: this.scrambleCache}, parseScrambledCubeSvg);
-  //   }
-  //   setTimeout(() => {
-  //     this.scrambleCache = window.puzzles[
-  //       parsedWcaEvent
-  //       ].generateScramble();
-  //   }, 100);
-  // }
-
   addRecordedTimes(value) {
     this.setState(prevState => {
       const recordedTimeInfo = {time: value, scramble: prevState.scramble, date: new Date().toLocaleString("en-us")}

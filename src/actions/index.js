@@ -14,11 +14,12 @@ export const updateScramble = (generateCurrentAndNext = false) => {
 
     const state = getState();
     const scrambleCache = generateCurrentAndNext ? "" : state.scrambleCache;
-    if (!scrambleCache)
+    if (!scrambleCache) {
       dispatch({
         type: "UPDATE_SCRAMBLE",
         scramble: "Loading Scramble"
       });
+    }
 
     // 333oh uses the same scramble algorithm as 333
     let parsedWcaEvent = state.wcaEvent === "333oh" ? "333" : state.wcaEvent;

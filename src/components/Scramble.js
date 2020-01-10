@@ -1,13 +1,13 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
 function Scramble(props) {
   return (
     <Typography
       variant={"body1"}
       color={"textSecondary"}
-      style={{marginBottom: 80}}
+      style={{ marginBottom: 80 }}
     >
       {props.scramble}
     </Typography>
@@ -15,5 +15,5 @@ function Scramble(props) {
 }
 
 export default connect(state => ({
-  scramble: state.scramble,
-}))(Scramble)
+  scramble: state.scramble
+}))(Scramble);
