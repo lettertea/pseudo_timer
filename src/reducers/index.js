@@ -1,6 +1,12 @@
 import { combineReducers } from 'redux'
-import settings from './settings'
+import svgScale from './svgScale'
+import wcaEvent from "./wcaEvent";
+import scramble from "./scramble";
+import scrambleCache from "./scrambleCache";
 
 export default combineReducers({
-  settings,
+  svgScale,
+  wcaEvent,
+  scramble,
+  scrambleCache
 })

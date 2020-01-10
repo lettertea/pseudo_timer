@@ -12,15 +12,12 @@ export default function Settings(props) {
       <Grid container spacing={3}>
         <Grid item xs>
           <StyledPaper height={PAPER_HEIGHT}>
-            <EventOptions
-              wcaEvent={props.wcaEvent}
-              setWcaEvent={props.setWcaEvent}
-            />
+            <EventOptions />
           </StyledPaper>
         </Grid>
         <Grid item xs>
           <StyledPaper height={PAPER_HEIGHT}>
-            <SvgScale scaleFactor={props.scaleFactor} setScaleFactor={props.setScaleFactor} />
+            <SvgScale />
           </StyledPaper>
         </Grid>
       </Grid>

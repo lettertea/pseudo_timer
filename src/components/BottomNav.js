@@ -15,8 +15,6 @@ export default props => {
     <Settings
       wcaEvent={props.wcaEvent}
       setWcaEvent={props.setWcaEvent}
-      scaleFactor={props.scaleFactor}
-      setScaleFactor={props.setScaleFactor}
     />,
     null
   ];

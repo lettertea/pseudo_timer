@@ -6,14 +6,15 @@ import BottomNav from "./components/BottomNav";
 import Typography from "@material-ui/core/Typography";
 import StyledPaper from "./components/StyledPaper";
 import {connect} from "react-redux";
+import Scramble from "./components/Scramble";
+import {bindActionCreators} from "redux";
+import {updateScramble, setSvgScale} from "./actions";
 
 
 class App extends Component {
   state = {
     recordedTimes: {},
-    scramble: "",
     scrambledCubeSvg: "",
-    wcaEvent: "333",
     scaleFactor: 2
   };
 
@@ -22,61 +23,62 @@ class App extends Component {
   componentDidMount() {
     if (localStorage.getItem("times")) {
       this.setState(JSON.parse(localStorage.getItem("times")));
+      console.log(this.props.wcaEvent);
     } else {
-      this.updateScramble(true);
+      this.props.updateScramble(true);
     }
   }
 
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.recordedTimes !== this.state.recordedTimes) {
-      this.updateScramble();
-    } else if (prevState.wcaEvent !== this.state.wcaEvent) {
-      this.updateScramble(true);
+      this.props.updateScramble();
+    } else if (prevProps.wcaEvent !== this.props.wcaEvent) {
+      this.props.updateScramble(true);
     }
   }
 
-  updateScramble(loadCurrentAndNextScramble = false) {
-    // 333oh uses the same scramble algorithm as 333
-    let parsedWcaEvent = this.state.wcaEvent === "333oh" ? "333" : this.state.wcaEvent;
-    if (typeof window.puzzles === "undefined") {
-      setTimeout(() => this.updateScramble(true), 200);
-      return;
-    }
-
-    // setTimeouts are used to make generateScramble calls asynchronous because
-    // it can take a long time to execute. The asynchronous nature allows some
-    // rendering in between calls to happen so the UI doesn't seem like it's
-    // freezing up
-
-    const parseScrambledCubeSvg = () => {
-      this.svgRef.current.innerHTML = window.toSVG(
-        this.state.scramble,
-        window.puzzles[parsedWcaEvent]
-      );
-    };
-
-    if (loadCurrentAndNextScramble) {
-      // Set scramble to empty to notify users the scramble is loading
-      this.setState({scramble: ""});
-
-      setTimeout(() => {
-        this.setState(
-          {
-            scramble: window.puzzles[parsedWcaEvent].generateScramble()
-          },
-          parseScrambledCubeSvg
-        );
-      });
-    } else {
-      this.setState({scramble: this.nextScramble}, parseScrambledCubeSvg);
-    }
-    setTimeout(() => {
-      this.nextScramble = window.puzzles[
-        parsedWcaEvent
-        ].generateScramble();
-    }, 100);
-  }
+  // updateScramble(loadCurrentAndNextScramble = false) {
+  //   // 333oh uses the same scramble algorithm as 333
+  //   let parsedWcaEvent = this.props.wcaEvent === "333oh" ? "333" : this.props.wcaEvent;
+  //
+  //   if (typeof window.puzzles === "undefined") {
+  //     setTimeout(() => this.updateScramble(true), 200);
+  //     return;
+  //   }
+  //
+  //   // setTimeouts are used to make generateScramble calls asynchronous because
+  //   // it can take a long time to execute. The asynchronous nature allows some
+  //   // rendering in between calls to happen so the UI doesn't seem like it's
+  //   // freezing up
+  //   const parseScrambledCubeSvg = () => {
+  //     this.svgRef.current.innerHTML = window.toSVG(
+  //       this.props.scramble,
+  //       window.puzzles[parsedWcaEvent]
+  //     );
+  //   };
+  //
+  //   if (loadCurrentAndNextScramble) {
+  //     // Set scramble to empty to notify users the scramble is loading
+  //     this.setState({scramble: ""});
+  //
+  //     setTimeout(() => {
+  //       this.setState(
+  //         {
+  //           scramble: window.puzzles[parsedWcaEvent].generateScramble()
+  //         },
+  //         parseScrambledCubeSvg
+  //       );
+  //     });
+  //   } else {
+  //     this.setState({scramble: this.scrambleCache}, parseScrambledCubeSvg);
+  //   }
+  //   setTimeout(() => {
+  //     this.scrambleCache = window.puzzles[
+  //       parsedWcaEvent
+  //       ].generateScramble();
+  //   }, 100);
+  // }
 
   addRecordedTimes(value) {
     this.setState(prevState => {
@@ -104,20 +106,16 @@ class App extends Component {
         <Grid container direction="column" alignItems={"center"}>
 
           <Stopwatch addRecordedTimes={this.addRecordedTimes.bind(this)}/>
-          <Typography variant={"body1"}
-                      color={"textSecondary"}
-                      style={{marginBottom: 80}}>{this.state.scramble || "Loading Scramble..."}</Typography>
+          <Scramble/>
 
 
           <Grid container spacing={4}>
             <Grid item xs={8}>
               <BottomNav
-                recordedTimes={this.state.recordedTimes[this.state.wcaEvent]}
-                wcaEvent={this.state.wcaEvent}
+                recordedTimes={this.state.recordedTimes[this.props.wcaEvent]}
+                wcaEvent={this.props.wcaEvent}
                 setWcaEvent={value => this.setState({wcaEvent: value})}
-                scaleFactor={this.state.scaleFactor}
-                setScaleFactor={value => this.setState({scaleFactor: value})}
-              />
+                 />
             </Grid>
             <Grid item xs={4}>
               {/* Hardcode margin top to align with contents of BottomNav */}
@@ -142,8 +140,17 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  svgScale: state.settings
+  svgScale: state.svgScale,
+  wcaEvent: state.wcaEvent
 })
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      updateScramble
+    },
+    dispatch
+  );
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(App)

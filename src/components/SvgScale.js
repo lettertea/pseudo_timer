@@ -10,7 +10,7 @@ const SCALE_FACTOR_UNIT = 20;
 
 function SvgScale(props) {
   const [value, setValue] = React.useState(
-    props.scaleFactor * SCALE_FACTOR_UNIT
+    props.svgScale * SCALE_FACTOR_UNIT
   );
 
   const handleSliderChange = (event, newValue) => {
@@ -25,7 +25,6 @@ function SvgScale(props) {
         SVG Scale
       </Typography>
       <Grid container spacing={2} alignItems="center">
-        <Grid item></Grid>
         <Grid item xs>
           <Slider
             value={typeof value === "number" ? value : 0}
@@ -40,7 +39,7 @@ function SvgScale(props) {
 }
 
 const mapStateToProps = state => ({
-  svgScale: state.settings
+  svgScale: state.svgScale
 });
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
