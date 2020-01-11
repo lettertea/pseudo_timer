@@ -10,41 +10,42 @@ import msToTime from "../msToTime";
 import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import {connect} from "react-redux";
 
 
-export default function Times(props) {
+function Times(props) {
+
+  const eventTimes = props.times[props.wcaEvent];
 
   function createRows() {
-    if (!props.recordedTimes) {
+    if (!eventTimes) {
       return;
     }
 
-
     const rows = [];
-    for (let i = props.recordedTimes.length - 1; i >= 0; --i) {
-      const recordedTime = props.recordedTimes[i];
+    for (let i = eventTimes.length - 1; i >= 0; --i) {
+      const time = eventTimes[i];
       const averages = {
         "3of5": i >= 4
-          ? msToTime(props.recordedTimes.slice(i - 4, i + 1).sort((a, b) => a.time - b.time)
-            .slice(1, 4)
-            .reduce((a, b) => a + b.time, 0) / 3)
+          ? msToTime(eventTimes.slice(i - 4, i + 1).sort((a, b) => a.time - b.time)
+            .slice(1, 4).reduce((a, b) => a + b.time, 0) / 3)
           : "",
-        ao3: i >= 2 ? msToTime(props.recordedTimes.slice(i - 2, i + 1).reduce((a, b) => a + b.time, 0) / 3) : "",
-        ao12: i >= 11 ? msToTime(props.recordedTimes.slice(i - 11, i + 1).reduce((a, b) => a + b.time, 0) / 12) : ""
+        ao3: i >= 2 ? msToTime(eventTimes.slice(i - 2, i + 1).reduce((a, b) => a + b.time, 0) / 3) : "",
+        ao12: i >= 11 ? msToTime(eventTimes.slice(i - 11, i + 1).reduce((a, b) => a + b.time, 0) / 12) : ""
       };
 
       rows.push(
         <TableRow key={i}>
           <TableCell>{i + 1}</TableCell>
           <TableCell component="th" scope="row">
-            {recordedTime.date}
+            {time.date}
           </TableCell>
-          <TableCell align="right">{msToTime(recordedTime["time"])}</TableCell>
+          <TableCell align="right">{msToTime(time["time"])}</TableCell>
           <TableCell align="right">{averages["3of5"]}</TableCell>
           <TableCell align="right">{averages["ao3"]}</TableCell>
           <TableCell align="right">{averages["ao12"]}</TableCell>
           <TableCell align="right">
-            <Tooltip title={<Typography>{recordedTime["scramble"]}</Typography>} interactive>
+            <Tooltip title={<Typography>{time["scramble"]}</Typography>} interactive>
               <Button>Hover</Button>
             </Tooltip>
           </TableCell>
@@ -76,3 +77,9 @@ export default function Times(props) {
     </TableContainer>
   );
 }
+
+
+export default connect(state => ({
+  times: state.times,
+  wcaEvent: state.wcaEvent
+}))(Times)

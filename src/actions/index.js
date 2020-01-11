@@ -13,6 +13,8 @@ export const updateScramble = (generateCurrentAndNext = false) => {
     }
 
     const state = getState();
+
+    // The empty string marks that it's invalid and that the scramble does not have a cache
     const scrambleCache = generateCurrentAndNext ? "" : state.scrambleCache;
     if (!scrambleCache) {
       dispatch({
@@ -43,5 +45,34 @@ export const setWcaEvent = wcaEvent => {
   return {
     type: "SET_WCA_EVENT",
     wcaEvent: wcaEvent
+  };
+};
+
+export const addTime = time => (dispatch, getState) => {
+  const state = getState();
+  const timeDetails = {
+    time: time,
+    scramble: state.scramble,
+    date: new Date().toLocaleString("en-us")
+  };
+  const timesCopy = {...state.times};
+
+  if (timesCopy[state.wcaEvent]) {
+    timesCopy[state.wcaEvent].push(timeDetails);
+  } else {
+    timesCopy[state.wcaEvent] = [timeDetails];
+  }
+
+  localStorage.setItem("times", JSON.stringify(timesCopy));
+  dispatch({
+    type: "ADD_TIME",
+    times: timesCopy
+  });
+};
+
+export const setTimes = times => {
+  return {
+    type: "SET_TIMES",
+    times: times
   };
 };
