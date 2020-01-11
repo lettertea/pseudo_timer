@@ -1,3 +1,5 @@
+import msToTime from "../msToTime";
+
 export const setSvgScale = svgScale => {
   return {
     type: "SET_SVG_SCALE",
@@ -50,12 +52,20 @@ export const setWcaEvent = wcaEvent => {
 
 export const addTime = time => (dispatch, getState) => {
   const state = getState();
+  const timesCopy = {...state.times};
+  const eventTimesForCalculatingAverages = timesCopy[state.wcaEvent] ? [...timesCopy[state.wcaEvent], {time:time}] : [];
+  const lastIndex = eventTimesForCalculatingAverages.length - 1;
+
   const timeDetails = {
     time: time,
     scramble: state.scramble,
-    date: new Date().toLocaleString("en-us")
+    date: new Date().toLocaleString("en-us"),
+    "3of5": lastIndex >= 4
+      ? msToTime(eventTimesForCalculatingAverages.slice(lastIndex - 4, lastIndex + 1).sort((a, b) => a.time - b.time)
+        .slice(1, 4).reduce((a, b) => a + b.time, 0) / 3) : "",
+    ao3: lastIndex >= 2 ? msToTime(eventTimesForCalculatingAverages.slice(lastIndex - 2, lastIndex + 1).reduce((a, b) => a + b.time, 0) / 3) : "",
+    ao12: lastIndex >= 11 ? msToTime(eventTimesForCalculatingAverages.slice(lastIndex - 11, lastIndex + 1).reduce((a, b) => a + b.time, 0) / 12) : ""
   };
-  const timesCopy = {...state.times};
 
   if (timesCopy[state.wcaEvent]) {
     timesCopy[state.wcaEvent].push(timeDetails);

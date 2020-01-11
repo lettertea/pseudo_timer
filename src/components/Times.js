@@ -25,14 +25,6 @@ function Times(props) {
     const rows = [];
     for (let i = eventTimes.length - 1; i >= 0; --i) {
       const time = eventTimes[i];
-      const averages = {
-        "3of5": i >= 4
-          ? msToTime(eventTimes.slice(i - 4, i + 1).sort((a, b) => a.time - b.time)
-            .slice(1, 4).reduce((a, b) => a + b.time, 0) / 3)
-          : "",
-        ao3: i >= 2 ? msToTime(eventTimes.slice(i - 2, i + 1).reduce((a, b) => a + b.time, 0) / 3) : "",
-        ao12: i >= 11 ? msToTime(eventTimes.slice(i - 11, i + 1).reduce((a, b) => a + b.time, 0) / 12) : ""
-      };
 
       rows.push(
         <TableRow key={i}>
@@ -41,9 +33,9 @@ function Times(props) {
             {time.date}
           </TableCell>
           <TableCell align="right">{msToTime(time["time"])}</TableCell>
-          <TableCell align="right">{averages["3of5"]}</TableCell>
-          <TableCell align="right">{averages["ao3"]}</TableCell>
-          <TableCell align="right">{averages["ao12"]}</TableCell>
+          <TableCell align="right">{time["3of5"]}</TableCell>
+          <TableCell align="right">{time["ao3"]}</TableCell>
+          <TableCell align="right">{time["ao12"]}</TableCell>
           <TableCell align="right">
             <Tooltip title={<Typography>{time["scramble"]}</Typography>} interactive>
               <Button>Hover</Button>
