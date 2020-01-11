@@ -2214,11 +2214,6 @@ base@^0.11.1:
     mixin-deep "^1.2.0"
     pascalcase "^0.1.1"
 
-basic-tts@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/basic-tts/-/basic-tts-1.0.4.tgz#d4911389a84347cd9c9c7866c5f26f81033cc417"
-  integrity sha512-Tbe3mjWNGHoH7d3TjnRiQ3V3Cs10dKzdNxzrrlNRgjXVazwreoY4c31p3FgX9Ucmgxz6ehV+nhjPiPNPmLKWEA==
-
 batch@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/batch/-/batch-0.6.1.tgz#dc34314f4e679318093fc760272525f94bf25c16"

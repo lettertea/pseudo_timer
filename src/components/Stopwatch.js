@@ -1,9 +1,6 @@
 import React, {Component} from "react";
-import tts from "basic-tts";
 import Typography from "@material-ui/core/Typography";
 import msToTime from "../msToTime";
-
-const speaker = tts.createSpeaker({rate:1.2});
 
 const eightSeconds = new Audio(require("../audio/female/eight_seconds.ogg"));
 const twelveSeconds = new Audio(require("../audio/female/twelve_seconds.ogg"));
@@ -80,15 +77,12 @@ class Stopwatch extends Component {
         clearInterval(this.timer);
         this.isTiming = false;
         this.isHoldingSpaceAtStop = true;
-        const spokenTime = this.displayedTimeRef.current.innerText;
-        speaker.speak(spokenTime).then(console.log).catch(console.log)
+
         this.props.addRecordedTimes(this.state.runningTime);
 
       }
     }
   };
-
-
 
 
   render() {

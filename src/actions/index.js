@@ -28,8 +28,8 @@ export const updateScramble = (generateCurrentAndNext = false) => {
       type: "UPDATE_SCRAMBLE",
       scramble: scrambleCache ? scrambleCache : window.puzzles[parsedWcaEvent].generateScramble()
     });
-    // Use timeouts to allow some UI rendering between calls
 
+    // Use timeouts to allow some UI rendering between calls
     setTimeout(() => {
       dispatch({
         type: "UPDATE_SCRAMBLE_CACHE",
