@@ -78,8 +78,9 @@ class Stopwatch extends Component {
         this.isTiming = false;
         this.isHoldingSpaceAtStop = true;
 
-        this.props.updateScramble();
+        // addTime should be called before updateScramble as addTime uses the current scramble information
         this.props.addTime(this.state.runningTime);
+        this.props.updateScramble();
       }
     }
   };
