@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import clsx from 'clsx';
 import {withStyles} from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
@@ -134,7 +134,7 @@ const VirtualizedTable = withStyles(styles)(MuiVirtualizedTable);
 function Times(props) {
   const rows = [];
 
-  if (props.times[props.wcaEvent]){
+  if (props.times[props.wcaEvent]) {
     for (let i = props.times[props.wcaEvent].length - 1; i >= 0; i--) {
       const time = props.times[props.wcaEvent][i];
       rows.push({
@@ -146,6 +146,12 @@ function Times(props) {
       )
     }
   }
+
+  useEffect(()=>{
+    if (localStorage.getItem("times")) {
+      props.setTimes(JSON.parse(localStorage.getItem("times")));
+    }
+  },[]);
 
   return (
     <Paper style={{height: 340, width: '100%'}}>
