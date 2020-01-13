@@ -43,8 +43,8 @@ const styles = theme => ({
 
 class MuiVirtualizedTable extends React.PureComponent {
   static defaultProps = {
-    headerHeight: 60,
-    rowHeight: 60,
+    headerHeight: 54,
+    rowHeight: 54,
   };
 
   getRowClassName = ({index}) => {
