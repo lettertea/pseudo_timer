@@ -7,19 +7,19 @@ import Button from "@material-ui/core/Button";
 export const addTime = milliseconds => (dispatch, getState) => {
   const state = getState();
 
-  // Create newTimes with just timeInMilliseconds added for now to do average calculations
-  let newTimes = state.times[state.wcaEvent] ? [{timeInMilliseconds: milliseconds}, ...state.times[state.wcaEvent]] : [];
+  // Create eventTimesCopy with just timeInMilliseconds added for now to do average calculations
+  let eventTimesCopy = state.times[state.wcaEvent] ? [{timeInMilliseconds: milliseconds}, ...state.times[state.wcaEvent]] : [];
 
   const timeDetails = {
-    solveNumber: newTimes.length,
+    solveNumber: eventTimesCopy.length,
     timeInMilliseconds: milliseconds,
     time: msToTime(milliseconds),
     date: new Date().toLocaleString("en-us"),
-    "3of5": newTimes.length >= 5
-      ? msToTime(newTimes.slice(0, 5).sort((a, b) => a.timeInMilliseconds - b.timeInMilliseconds)
+    "3of5": eventTimesCopy.length >= 5
+      ? msToTime(eventTimesCopy.slice(0, 5).sort((a, b) => a.timeInMilliseconds - b.timeInMilliseconds)
         .slice(1, 4).reduce((a, b) => a + b.timeInMilliseconds, 0) / 3) : "",
-    ao3: newTimes.length >= 3 ? msToTime(newTimes.slice(0, 3).reduce((a, b) => a + b.timeInMilliseconds, 0) / 3) : "",
-    ao12: newTimes.length >= 12 ? msToTime(newTimes.slice(0, 12).reduce((a, b) => a + b.timeInMilliseconds, 0) / 12) : "",
+    ao3: eventTimesCopy.length >= 3 ? msToTime(eventTimesCopy.slice(0, 3).reduce((a, b) => a + b.timeInMilliseconds, 0) / 3) : "",
+    ao12: eventTimesCopy.length >= 12 ? msToTime(eventTimesCopy.slice(0, 12).reduce((a, b) => a + b.timeInMilliseconds, 0) / 12) : "",
     scramble: (
       <Tooltip title={<Typography>{state.scramble}</Typography>} interactive placement="top">
         <Button>Hover</Button>
@@ -27,16 +27,21 @@ export const addTime = milliseconds => (dispatch, getState) => {
     )
   };
 
-  if (newTimes.length === 0) {
-    newTimes = [timeDetails]
+  if (eventTimesCopy.length === 0) {
+    eventTimesCopy = [timeDetails]
   } else {
-    newTimes[0] = timeDetails;
+    eventTimesCopy[0] = timeDetails;
   }
 
+  const updatedTimes = {...state.times, [state.wcaEvent]: eventTimesCopy};
+
+  localStorage.setItem("times", JSON.stringify(updatedTimes));
   dispatch({
     type: "ADD_TIME",
-    times: {...state.times, [state.wcaEvent]: newTimes}
+    times: updatedTimes
   });
+
+
 };
 
 export const setTimes = times => {
