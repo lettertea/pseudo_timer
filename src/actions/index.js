@@ -40,7 +40,7 @@ export const updateScramble = (generateCurrentAndNext = false) => {
         type: "UPDATE_SCRAMBLE_CACHE",
         scrambleCache: window.puzzles[parsedWcaEvent].generateScramble()
       });
-    }, 200);
+    });
   };
 };
 
