@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import Typography from "@material-ui/core/Typography";
 import msToTime from "../msToTime";
 import {bindActionCreators} from "redux";
-import {addTime} from "../actions";
+import {addTime, updateScramble} from "../actions";
 import {connect} from "react-redux";
 
 const eightSeconds = new Audio(require("../audio/female/eight_seconds.ogg"));
@@ -78,6 +78,7 @@ class Stopwatch extends Component {
         this.isTiming = false;
         this.isHoldingSpaceAtStop = true;
 
+        this.props.updateScramble();
         this.props.addTime(this.state.runningTime);
       }
     }
@@ -103,7 +104,8 @@ class Stopwatch extends Component {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      addTime
+      addTime,
+      updateScramble
     },
     dispatch
   );

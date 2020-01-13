@@ -6,17 +6,7 @@ import { updateScramble } from "../actions";
 
 class Scramble extends Component {
   componentDidMount() {
-    if (!localStorage.getItem("times")) {
-      this.props.updateScramble(true);
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.times !== this.props.times) {
-      this.props.updateScramble();
-    } else if (prevProps.wcaEvent !== this.props.wcaEvent) {
-      this.props.updateScramble(true);
-    }
+    this.props.updateScramble(true);
   }
 
   render() {
@@ -27,6 +17,8 @@ class Scramble extends Component {
         style={{ marginBottom: 80 }}
       >
         {this.props.scramble}
+        <br />
+        {this.props.scrambleCache}
       </Typography>
     );
   }
@@ -35,7 +27,8 @@ class Scramble extends Component {
 const mapStateToProps = state => ({
   scramble: state.scramble,
   wcaEvent: state.wcaEvent,
-  times: state.times
+  times: state.times,
+  scrambleCache: state.scrambleCache
 });
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
