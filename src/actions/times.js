@@ -1,8 +1,5 @@
 import msToTime from "../msToTime";
-import Tooltip from "@material-ui/core/Tooltip";
 import React from "react";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 
 export const addTime = milliseconds => (dispatch, getState) => {
   const state = getState();
@@ -11,7 +8,7 @@ export const addTime = milliseconds => (dispatch, getState) => {
   let eventTimesCopy = state.times[state.wcaEvent] ? [{timeInMilliseconds: milliseconds}, ...state.times[state.wcaEvent]] : [];
 
   const timeDetails = {
-    solveNumber: eventTimesCopy.length,
+    solveNumber: eventTimesCopy.length || 1,
     timeInMilliseconds: milliseconds,
     time: msToTime(milliseconds),
     date: new Date().toLocaleString("en-us"),
@@ -20,11 +17,7 @@ export const addTime = milliseconds => (dispatch, getState) => {
         .slice(1, 4).reduce((a, b) => a + b.timeInMilliseconds, 0) / 3) : "",
     ao3: eventTimesCopy.length >= 3 ? msToTime(eventTimesCopy.slice(0, 3).reduce((a, b) => a + b.timeInMilliseconds, 0) / 3) : "",
     ao12: eventTimesCopy.length >= 12 ? msToTime(eventTimesCopy.slice(0, 12).reduce((a, b) => a + b.timeInMilliseconds, 0) / 12) : "",
-    scramble: (
-      <Tooltip title={<Typography>{state.scramble}</Typography>} interactive placement="top">
-        <Button>Hover</Button>
-      </Tooltip>
-    )
+    scramble: state.scramble
   };
 
   if (eventTimesCopy.length === 0) {
@@ -45,6 +38,7 @@ export const addTime = milliseconds => (dispatch, getState) => {
 };
 
 export const setTimes = times => {
+  console.log(times);
   return {
     type: "SET_TIMES",
     times: times

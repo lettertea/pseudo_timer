@@ -55,8 +55,23 @@ class MuiVirtualizedTable extends React.PureComponent {
     });
   };
 
+
   cellRenderer = ({cellData, columnIndex}) => {
     const {columns, classes, rowHeight, onRowClick} = this.props;
+
+    // Allow Scramble to have react components and works with localstorage
+    const renderData = () => {
+      const slot = this.props.columns[columnIndex];
+      if (columnIndex != null && slot.dataKey === "scramble") {
+        return (
+          <Tooltip title={<Typography>{cellData}</Typography>} interactive placement="top">
+            <Button>Hover</Button>
+          </Tooltip>
+        )
+      }
+      return cellData;
+    }
+
     return (
       <TableCell
         component="div"
@@ -67,7 +82,7 @@ class MuiVirtualizedTable extends React.PureComponent {
         style={{height: rowHeight}}
         align={(columnIndex != null && columns[columnIndex].numeric) || false ? 'right' : 'left'}
       >
-        {cellData}
+        {renderData()}
       </TableCell>
     );
   };
@@ -134,7 +149,7 @@ class MuiVirtualizedTable extends React.PureComponent {
 const VirtualizedTable = withStyles(styles)(MuiVirtualizedTable);
 
 function Times(props) {
-
+  const rows = props.times[props.wcaEvent] || [];
 
   useEffect(()=>{
     if (localStorage.getItem("times")) {
@@ -142,12 +157,11 @@ function Times(props) {
     }
   },[]);
 
-  const timess = props.times[props.wcaEvent] || [];
   return (
     <Paper style={{height: 340, width: '100%'}}>
       <VirtualizedTable
-        rowCount={timess.length}
-        rowGetter={({index}) => timess[index]}
+        rowCount={rows.length}
+        rowGetter={({ index }) => rows[index]}
         columns={[
           {
             width: 100,
