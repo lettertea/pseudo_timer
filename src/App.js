@@ -19,25 +19,6 @@ class App extends Component {
 
   svgRef = createRef();
 
-  componentDidMount() {
-    if (localStorage.getItem("times")) {
-      console.log(JSON.parse(localStorage.getItem("times")));
-      this.props.setTimes(JSON.parse(localStorage.getItem("times")));
-    } else {
-      this.props.updateScramble(true);
-    }
-  }
-
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.times !== this.props.times) {
-      this.props.updateScramble();
-    } else if (prevProps.wcaEvent !== this.props.wcaEvent) {
-      this.props.updateScramble(true);
-    }
-  }
-
-
   render() {
     return (
       <Container style={{
@@ -82,17 +63,7 @@ class App extends Component {
 const mapStateToProps = (state) => ({
   svgScale: state.svgScale,
   wcaEvent: state.wcaEvent,
-  times: state.times
 })
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      updateScramble,
-      setTimes
-    },
-    dispatch
-  );
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(App)
