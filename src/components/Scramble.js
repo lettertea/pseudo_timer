@@ -17,8 +17,6 @@ class Scramble extends Component {
         style={{ marginBottom: 80 }}
       >
         {this.props.scramble}
-        <br />
-        {this.props.scrambleCache}
       </Typography>
     );
   }
@@ -27,8 +25,7 @@ class Scramble extends Component {
 const mapStateToProps = state => ({
   scramble: state.scramble,
   wcaEvent: state.wcaEvent,
-  times: state.times,
-  scrambleCache: state.scrambleCache
+  times: state.times
 });
 const mapDispatchToProps = dispatch =>
   bindActionCreators(

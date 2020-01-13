@@ -139,7 +139,7 @@ function Times(props) {
       const time = props.times[props.wcaEvent][i];
       rows.push({
           ...time, solveNumber: i + 1, scramble: (
-            <Tooltip title={<Typography>{time["scramble"]}</Typography>} interactive>
+            <Tooltip title={<Typography>{time["scramble"]}</Typography>} interactive placement="top">
               <Button>Hover</Button>
             </Tooltip>)
         }
