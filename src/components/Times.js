@@ -92,6 +92,7 @@ class MuiVirtualizedTable extends React.PureComponent {
     const {classes, columns, rowHeight, headerHeight, ...tableProps} = this.props;
     return (
       <AutoSizer>
+
         {({height, width}) => (
           <Table
             height={height}
@@ -117,6 +118,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                   }
                   className={classes.flexContainer}
                   cellRenderer={this.cellRenderer}
+
                   dataKey={dataKey}
                   {...other}
                 />
@@ -132,20 +134,7 @@ class MuiVirtualizedTable extends React.PureComponent {
 const VirtualizedTable = withStyles(styles)(MuiVirtualizedTable);
 
 function Times(props) {
-  const rows = [];
 
-  if (props.times[props.wcaEvent]) {
-    for (let i = props.times[props.wcaEvent].length - 1; i >= 0; i--) {
-      const time = props.times[props.wcaEvent][i];
-      rows.push({
-          ...time, solveNumber: i + 1, scramble: (
-            <Tooltip title={<Typography>{time["scramble"]}</Typography>} interactive placement="top">
-              <Button>Hover</Button>
-            </Tooltip>)
-        }
-      )
-    }
-  }
 
   useEffect(()=>{
     if (localStorage.getItem("times")) {
@@ -153,11 +142,12 @@ function Times(props) {
     }
   },[]);
 
+  const timess = props.times[props.wcaEvent] || [];
   return (
     <Paper style={{height: 340, width: '100%'}}>
       <VirtualizedTable
-        rowCount={rows.length}
-        rowGetter={({index}) => rows[index]}
+        rowCount={timess.length}
+        rowGetter={({index}) => timess[index]}
         columns={[
           {
             width: 100,
