@@ -7,7 +7,7 @@ function Svg(props) {
   let svgRef = useRef();
 
   useEffect(() => {
-    if (window.puzzles && props.scramble !== "Loading Scramble") {
+    if (window.puzzles && props.scramble !== "Loading Scramble...") {
       svgRef.current.innerHTML = window.toSVG(props.scramble, window.puzzles[props.wcaEvent])
     }
   }, [props.scramble])

@@ -4,7 +4,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import {bindActionCreators} from "redux";
-import {setWcaEvent} from "../actions";
+import {setWcaEvent, updateScramble} from "../actions";
 import {connect} from "react-redux";
 
 const WCA_EVENTS = [
@@ -34,6 +34,7 @@ function EventOptions(props) {
   const handleChange = event => {
     setSelectedMenu(event.target.value);
     props.setWcaEvent(WCA_EVENTS[event.target.value].tnoodleName);
+    props.updateScramble(true);
   };
 
   const handleClose = () => {
@@ -72,7 +73,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      setWcaEvent
+      setWcaEvent,
+      updateScramble
     },
     dispatch
   );

@@ -38,7 +38,6 @@ export const addTime = milliseconds => (dispatch, getState) => {
 };
 
 export const setTimes = times => {
-  console.log(times);
   return {
     type: "SET_TIMES",
     times: times

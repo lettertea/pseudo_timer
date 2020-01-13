@@ -1,5 +1,5 @@
 const scrambleCache = (state = "", action) => {
-  if (action.type === "UPDATE_SCRAMBLE_CACHE") {
+  if (action.type === "SET_SCRAMBLE_CACHE") {
     return action.scrambleCache;
   }
   return state;

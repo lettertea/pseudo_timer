@@ -1,4 +1,5 @@
 import React from "react";
+
 export * from "./times";
 
 export const setSvgScale = svgScale => {
@@ -17,30 +18,39 @@ export const updateScramble = (generateCurrentAndNext = false) => {
 
     const state = getState();
 
-    // The empty string marks that it's invalid and that the scramble does not have a cache
-    const scrambleCache = generateCurrentAndNext ? "" : state.scrambleCache;
-    if (!scrambleCache) {
-      dispatch({
-        type: "UPDATE_SCRAMBLE",
-        scramble: "Loading Scramble"
-      });
-    }
-
     // 333oh uses the same scramble algorithm as 333
     let parsedWcaEvent = state.wcaEvent === "333oh" ? "333" : state.wcaEvent;
 
-    dispatch({
-      type: "UPDATE_SCRAMBLE",
-      scramble: scrambleCache ? scrambleCache : window.puzzles[parsedWcaEvent].generateScramble()
-    });
+    // The empty string marks that it's invalid and that the scramble does not have a cache
+    const scrambleCache = generateCurrentAndNext ? "" : state.scrambleCache;
+
+    if (!scrambleCache) {
+      dispatch({
+        type: "SET_SCRAMBLE",
+        scramble: "Loading Scramble..."
+      });
+
+      setTimeout(() => {
+        dispatch({
+          type: "SET_SCRAMBLE",
+          scramble: scrambleCache ? scrambleCache : window.puzzles[parsedWcaEvent].generateScramble()
+        });
+      },100)
+    } else {
+      dispatch({
+        type: "SET_SCRAMBLE",
+        scramble: scrambleCache ? scrambleCache : window.puzzles[parsedWcaEvent].generateScramble()
+      });
+    }
+
 
     // Use timeouts to allow some UI rendering between calls
     setTimeout(() => {
       dispatch({
-        type: "UPDATE_SCRAMBLE_CACHE",
+        type: "SET_SCRAMBLE_CACHE",
         scrambleCache: window.puzzles[parsedWcaEvent].generateScramble()
       });
-    });
+    }, 200);
   };
 };
 
