@@ -60,3 +60,10 @@ export const setWcaEvent = wcaEvent => {
     wcaEvent: wcaEvent
   };
 };
+
+export const setInspection = inspection => {
+  return {
+    type: "SET_INSPECTION",
+    inspection: inspection
+  };
+};

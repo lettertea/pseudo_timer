@@ -1,0 +1,134 @@
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import FormControl from "@material-ui/core/FormControl";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import { bindActionCreators } from "redux";
+import { setInspection } from "../actions";
+import { connect } from "react-redux";
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: "flex"
+  },
+  formControl: {
+    margin: theme.spacing(3)
+  }
+}));
+
+const INITIAL_STATE = {
+  useInspection: true,
+  eightSeconds: true,
+  twelveSeconds: true,
+  inspectionBegins: false
+};
+
+const USE_INSPECTION = "useInspection";
+
+const EIGHT_SECONDS = "eightSeconds";
+const TWELVE_SECONDS = "twelveSeconds";
+const INSPECTION_BEGINS = "inspectionBegins";
+
+function Inspection(props) {
+  const classes = useStyles();
+
+  const handleChange = name => event => {
+    if (name === USE_INSPECTION) {
+      if (event.target.checked) {
+        props.setInspection(INITIAL_STATE);
+      } else {
+        props.setInspection({
+          noInspection: false,
+          eightSeconds: false,
+          twelveSeconds: false,
+          inspectionBegins: false
+        });
+      }
+    } else {
+      props.setInspection({
+        ...props.inspection,
+        [name]: event.target.checked
+      });
+    }
+  };
+
+  const handleChecked = name => {
+    if (name === USE_INSPECTION) {
+      return (
+        props.inspection.eightSeconds ||
+        props.inspection.twelveSeconds ||
+        props.inspection.inspectionBegins
+      );
+    }
+    return props.inspection[name];
+  };
+
+  return (
+    <div className={classes.root}>
+      <FormControl component="fieldset" className={classes.formControl}>
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={handleChecked(USE_INSPECTION)}
+                onChange={handleChange(USE_INSPECTION)}
+                color="primary"
+                value={USE_INSPECTION}
+              />
+            }
+            label="Use Inspection"
+          />
+        </FormGroup>
+      </FormControl>
+
+      <FormControl component="fieldset" className={classes.formControl}>
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={handleChecked(EIGHT_SECONDS)}
+                onChange={handleChange(EIGHT_SECONDS)}
+                value={EIGHT_SECONDS}
+              />
+            }
+            label='Call "Eight Seconds"'
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={handleChecked(TWELVE_SECONDS)}
+                onChange={handleChange(TWELVE_SECONDS)}
+                value={TWELVE_SECONDS}
+              />
+            }
+            label='Call "Twelve Seconds"'
+          />
+
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={handleChecked(INSPECTION_BEGINS)}
+                onChange={handleChange(INSPECTION_BEGINS)}
+                value={INSPECTION_BEGINS}
+              />
+            }
+            label='Call "Inspecting" when starting inspection'
+          />
+        </FormGroup>
+      </FormControl>
+    </div>
+  );
+}
+
+const mapStateToProps = state => ({
+  inspection: state.inspection
+});
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      setInspection
+    },
+    dispatch
+  );
+export default connect(mapStateToProps, mapDispatchToProps)(Inspection);
