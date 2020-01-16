@@ -67,3 +67,10 @@ export const setInspection = inspection => {
     inspection: inspection
   };
 };
+
+export const setJudgeGender = judgeGender => {
+  return {
+    type: "SET_JUDGE_GENDER",
+    judgeGender: judgeGender
+  };
+};

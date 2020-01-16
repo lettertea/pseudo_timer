@@ -1,12 +1,15 @@
 import React from "react";
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import {bindActionCreators} from "redux";
-import {setInspection} from "../actions";
-import {connect} from "react-redux";
+import { bindActionCreators } from "redux";
+import { setInspection, setJudgeGender } from "../actions";
+import { connect } from "react-redux";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,6 +36,8 @@ const INSPECTION_BEGINS = "inspectionBegins";
 function Inspection(props) {
   const classes = useStyles();
 
+  const [open, setOpen] = React.useState(false);
+
   const handleChange = name => event => {
     if (name === USE_INSPECTION) {
       if (event.target.checked) {
@@ -50,9 +55,11 @@ function Inspection(props) {
         ...props.inspection,
         useInspection: undefined,
         [name]: event.target.checked
-      }
+      };
       // Enables or disables useInspection depending on the options
-        inspectionOptions.useInspection = Object.values(inspectionOptions).includes(true);
+      inspectionOptions.useInspection = Object.values(
+        inspectionOptions
+      ).includes(true);
 
       props.setInspection(inspectionOptions);
     }
@@ -77,6 +84,19 @@ function Inspection(props) {
             }
             label="Use Inspection"
           />
+          <Select
+            open={open}
+            onClose={() => setOpen(false)}
+            onOpen={() => setOpen(true)}
+            value={props.judgeGender}
+            onChange={e => {props.setJudgeGender(e.target.value)}}
+          >
+            {["Male", "Female"].map((e, i) => (
+              <MenuItem value={e} key={i}>
+                {e}
+              </MenuItem>
+            ))}
+          </Select>
         </FormGroup>
       </FormControl>
 
@@ -120,12 +140,14 @@ function Inspection(props) {
 }
 
 const mapStateToProps = state => ({
-  inspection: state.inspection
+  inspection: state.inspection,
+  judgeGender: state.judgeGender
 });
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      setInspection
+      setInspection,
+      setJudgeGender
     },
     dispatch
   );

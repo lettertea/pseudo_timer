@@ -5,9 +5,17 @@ import {bindActionCreators} from "redux";
 import {addTime, updateScramble} from "../actions";
 import {connect} from "react-redux";
 
-const eightSeconds = new Audio(require("../audio/female/eight_seconds.ogg"));
-const twelveSeconds = new Audio(require("../audio/female/twelve_seconds.ogg"));
-const inspecting = new Audio(require("../audio/female/inspecting.ogg"));
+const INSPECTION_VOICES = {
+  "Male": {
+    eightSeconds: new Audio(require("../audio/male/eight_seconds.ogg")),
+    twelveSeconds: new Audio(require("../audio/male/twelve_seconds.ogg")),
+    inspecting: new Audio(require("../audio/male/inspecting.ogg"))
+  }, "Female": {
+    eightSeconds: new Audio(require("../audio/female/eight_seconds.ogg")),
+    twelveSeconds: new Audio(require("../audio/female/twelve_seconds.ogg")),
+    inspecting: new Audio(require("../audio/female/inspecting.ogg"))
+  }
+}
 
 class Stopwatch extends Component {
   state = {
@@ -31,9 +39,9 @@ class Stopwatch extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.state.isInspecting) {
       if (this.props.inspection.eightSeconds && prevState.inspectionTime === 8) {
-        eightSeconds.play();
+        INSPECTION_VOICES[this.props.judgeGender].eightSeconds.play();
       } else if (this.props.inspection.twelveSeconds && prevState.inspectionTime === 4) {
-        twelveSeconds.play();
+        INSPECTION_VOICES[this.props.judgeGender].twelveSeconds.play();
       }
 
       if (prevState.isInspecting !== this.state.isInspecting) {
@@ -43,7 +51,7 @@ class Stopwatch extends Component {
           }));
         }, 1000);
         if (this.props.inspection.inspectionBegins) {
-          inspecting.play();
+          INSPECTION_VOICES[this.props.judgeGender].inspecting.play();
         }
       }
     }
@@ -112,6 +120,7 @@ class Stopwatch extends Component {
 
 const mapStateToProps = state => ({
   inspection: state.inspection,
+  judgeGender: state.judgeGender
 });
 const mapDispatchToProps = dispatch =>
   bindActionCreators(

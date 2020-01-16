@@ -5,7 +5,7 @@ import SvgScale from "./SvgScale";
 import React from "react";
 import Inspection from "./Inspection";
 
-export default function Settings(props) {
+export default function Settings() {
   const PAPER_HEIGHT = 125;
 
   return (
