@@ -27,11 +27,12 @@ class Stopwatch extends Component {
     document.body.onkeypress = this.handleKeyDown;
   }
 
+
   componentDidUpdate(prevProps, prevState) {
     if (this.state.isInspecting) {
-      if (prevState.inspectionTime === 8) {
+      if (this.props.inspection.eightSeconds && prevState.inspectionTime === 8) {
         eightSeconds.play();
-      } else if (prevState.inspectionTime === 4) {
+      } else if (this.props.inspection.twelveSeconds && prevState.inspectionTime === 4) {
         twelveSeconds.play();
       }
 
@@ -41,7 +42,9 @@ class Stopwatch extends Component {
             inspectionTime: pastState.inspectionTime - 1
           }));
         }, 1000);
-        inspecting.play();
+        if (this.props.inspection.inspectionBegins) {
+          inspecting.play();
+        }
       }
     }
   }
@@ -51,7 +54,7 @@ class Stopwatch extends Component {
 
     if (e.key === " ") {
       if (!this.isTiming && !this.isHoldingSpaceAtStop) {
-        if (this.state.isInspecting) {
+        if (this.state.isInspecting || !this.props.inspection.useInspection) {
           const startTime = Date.now();
           this.timer = setInterval(() => {
             this.setState({runningTime: Date.now() - startTime});
@@ -60,10 +63,13 @@ class Stopwatch extends Component {
           this.isTiming = true;
           clearInterval(this.inspectionCountdown);
         }
-        this.setState(prevState => ({
-          isInspecting: !prevState.isInspecting,
-          inspectionTime: 15
-        }));
+
+        if (this.props.inspection.useInspection) {
+          this.setState(prevState => ({
+            isInspecting: !prevState.isInspecting,
+            inspectionTime: 15
+          }));
+        }
       }
       // Prevents stopwatch from starting again after finishing
       this.isHoldingSpaceAtStop = false;
@@ -103,6 +109,10 @@ class Stopwatch extends Component {
   }
 }
 
+
+const mapStateToProps = state => ({
+  inspection: state.inspection,
+});
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
@@ -111,4 +121,4 @@ const mapDispatchToProps = dispatch =>
     },
     dispatch
   );
-export default connect(null, mapDispatchToProps)(Stopwatch);
+export default connect(mapStateToProps, mapDispatchToProps)(Stopwatch);

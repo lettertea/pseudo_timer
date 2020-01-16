@@ -1,12 +1,12 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import { bindActionCreators } from "redux";
-import { setInspection } from "../actions";
-import { connect } from "react-redux";
+import {bindActionCreators} from "redux";
+import {setInspection} from "../actions";
+import {connect} from "react-redux";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -39,28 +39,26 @@ function Inspection(props) {
         props.setInspection(INITIAL_STATE);
       } else {
         props.setInspection({
-          noInspection: false,
+          useInspection: false,
           eightSeconds: false,
           twelveSeconds: false,
           inspectionBegins: false
         });
       }
     } else {
-      props.setInspection({
+      const inspectionOptions = {
         ...props.inspection,
+        useInspection: undefined,
         [name]: event.target.checked
-      });
+      }
+      // Enables or disables useInspection depending on the options
+        inspectionOptions.useInspection = Object.values(inspectionOptions).includes(true);
+
+      props.setInspection(inspectionOptions);
     }
   };
 
   const handleChecked = name => {
-    if (name === USE_INSPECTION) {
-      return (
-        props.inspection.eightSeconds ||
-        props.inspection.twelveSeconds ||
-        props.inspection.inspectionBegins
-      );
-    }
     return props.inspection[name];
   };
 
