@@ -1,36 +1,24 @@
-export const wcaEvent = (state = "333", action) => {
-  if (action.type === "SET_WCA_EVENT") {
-    return action.wcaEvent;
-  }
-  return state;
-};
+const _ = require('lodash');
 
-export const judgeGender = (state = "Male", action) => {
-  if (action.type === "SET_JUDGE_GENDER") {
-    return action.judgeGender;
-  }
-  return state;
-};
-
-export const svgScale = (state = 2, action) => {
-  if (action.type === "SET_SVG_SCALE") {
-    return action.svgScale;
-  }
-  return state;
-};
-
-export const inspection = (
-  state = {
+const INITIAL_STATE = {
+  wcaEvent: "333",
+  judgeGender: "Male",
+  svgScale: 2,
+  inspection: {
     useInspection: true,
     eightSeconds: true,
     twelveSeconds: true,
     inspectionBegins: false
-  },
-  action
-) => {
-  if (action.type === "SET_INSPECTION") {
-    return action.inspection;
   }
-  return state;
+}
+
+const settings = (state = INITIAL_STATE, action) => {
+  const validActions = new Set(["SET_WCA_EVENT", "SET_JUDGE_GENDER", "SET_SVG_SCALE", "SET_INSPECTION"]);
+  if (validActions.has(action.type)) {
+    const propertyName = _.camelCase(action.type.slice("SET_".length));
+    return {...state, [propertyName]: action[propertyName]};
+  }
+  return state
 };
 
+export default settings;

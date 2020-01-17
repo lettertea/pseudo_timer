@@ -139,10 +139,6 @@ function Inspection(props) {
   );
 }
 
-const mapStateToProps = state => ({
-  inspection: state.inspection,
-  judgeGender: state.judgeGender
-});
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
@@ -151,4 +147,4 @@ const mapDispatchToProps = dispatch =>
     },
     dispatch
   );
-export default connect(mapStateToProps, mapDispatchToProps)(Inspection);
+export default connect(null, mapDispatchToProps)(Inspection);

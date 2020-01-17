@@ -67,9 +67,6 @@ function EventOptions(props) {
   );
 }
 
-const mapStateToProps = state => ({
-  wcaEvent: state.wcaEvent
-});
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
@@ -78,4 +75,4 @@ const mapDispatchToProps = dispatch =>
     },
     dispatch
   );
-export default connect(mapStateToProps, mapDispatchToProps)(EventOptions);
+export default connect(null, mapDispatchToProps)(EventOptions);

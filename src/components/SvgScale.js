@@ -38,9 +38,7 @@ function SvgScale(props) {
   );
 }
 
-const mapStateToProps = state => ({
-  svgScale: state.svgScale
-});
+
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
@@ -48,4 +46,4 @@ const mapDispatchToProps = dispatch =>
     },
     dispatch
   );
-export default connect(mapStateToProps, mapDispatchToProps)(SvgScale);
+export default connect(null, mapDispatchToProps)(SvgScale);

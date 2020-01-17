@@ -8,7 +8,7 @@ function Svg(props) {
 
   useEffect(() => {
     if (window.puzzles && props.scramble !== "Loading Scramble...") {
-      svgRef.current.innerHTML = window.toSVG(props.scramble, window.puzzles[props.wcaEvent])
+      svgRef.current.innerHTML = window.toSVG(props.scramble, window.puzzles[props.settings.wcaEvent])
     }
   }, [props.scramble])
 
@@ -22,7 +22,7 @@ function Svg(props) {
     >
       <div
         style={{
-          transform: `scale(${props.svgScale})`,
+          transform: `scale(${props.settings.svgScale})`,
           transformOrigin: "center center"
         }}
         ref={svgRef}
@@ -32,7 +32,6 @@ function Svg(props) {
 }
 
 export default connect((state) => ({
-  svgScale: state.svgScale,
   scramble: state.scramble,
-  wcaEvent: state.wcaEvent
+  settings: state.settings
 }))(Svg);

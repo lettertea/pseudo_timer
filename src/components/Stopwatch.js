@@ -38,10 +38,10 @@ class Stopwatch extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.isInspecting) {
-      if (this.props.inspection.eightSeconds && prevState.inspectionTime === 8) {
-        INSPECTION_VOICES[this.props.judgeGender].eightSeconds.play();
-      } else if (this.props.inspection.twelveSeconds && prevState.inspectionTime === 4) {
-        INSPECTION_VOICES[this.props.judgeGender].twelveSeconds.play();
+      if (this.props.settings.inspection.eightSeconds && prevState.inspectionTime === 8) {
+        INSPECTION_VOICES[this.props.settings.judgeGender].eightSeconds.play();
+      } else if (this.props.settings.inspection.twelveSeconds && prevState.inspectionTime === 4) {
+        INSPECTION_VOICES[this.props.settings.judgeGender].twelveSeconds.play();
       }
 
       if (prevState.isInspecting !== this.state.isInspecting) {
@@ -50,8 +50,8 @@ class Stopwatch extends Component {
             inspectionTime: pastState.inspectionTime - 1
           }));
         }, 1000);
-        if (this.props.inspection.inspectionBegins) {
-          INSPECTION_VOICES[this.props.judgeGender].inspecting.play();
+        if (this.props.settings.inspection.inspectionBegins) {
+          INSPECTION_VOICES[this.props.settings.judgeGender].inspecting.play();
         }
       }
     }
@@ -62,7 +62,7 @@ class Stopwatch extends Component {
 
     if (e.key === " ") {
       if (!this.isTiming && !this.isHoldingSpaceAtStop) {
-        if (this.state.isInspecting || !this.props.inspection.useInspection) {
+        if (this.state.isInspecting || !this.props.settings.inspection.useInspection) {
           const startTime = Date.now();
           this.timer = setInterval(() => {
             this.setState({runningTime: Date.now() - startTime});
@@ -72,7 +72,7 @@ class Stopwatch extends Component {
           clearInterval(this.inspectionCountdown);
         }
 
-        if (this.props.inspection.useInspection) {
+        if (this.props.settings.inspection.useInspection) {
           this.setState(prevState => ({
             isInspecting: !prevState.isInspecting,
             inspectionTime: 15
@@ -119,8 +119,7 @@ class Stopwatch extends Component {
 
 
 const mapStateToProps = state => ({
-  inspection: state.inspection,
-  judgeGender: state.judgeGender
+  settings: state.settings
 });
 const mapDispatchToProps = dispatch =>
   bindActionCreators(

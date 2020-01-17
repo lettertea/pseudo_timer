@@ -19,7 +19,7 @@ export const updateScramble = (generateCurrentAndNext = false) => {
     const state = getState();
 
     // 333oh uses the same scramble algorithm as 333
-    let parsedWcaEvent = state.wcaEvent === "333oh" ? "333" : state.wcaEvent;
+    let parsedWcaEvent = state.settings.wcaEvent === "333oh" ? "333" : state.settings.wcaEvent;
 
     // The empty string marks that it's invalid and that the scramble does not have a cache
     const scrambleCache = generateCurrentAndNext ? "" : state.scrambleCache;
