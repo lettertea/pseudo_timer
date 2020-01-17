@@ -14,7 +14,10 @@ const INITIAL_STATE = {
 
 const settings = (state = INITIAL_STATE, action) => {
   const validActions = new Set(["SET_WCA_EVENT", "SET_VOICE_TYPE", "SET_SVG_SCALE", "SET_INSPECTION"]);
-  if (validActions.has(action.type)) {
+
+  if (action.type === "SET_SETTINGS") {
+    return action.settings;
+  } else if (validActions.has(action.type)) {
     const propertyName = _.camelCase(action.type.slice("SET_".length));
     return {...state, [propertyName]: action[propertyName]};
   }

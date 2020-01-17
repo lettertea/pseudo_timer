@@ -54,6 +54,13 @@ export const updateScramble = (generateCurrentAndNext = false) => {
   };
 };
 
+export const setSettings = settings => {
+  return {
+    type: "SET_SETTINGS",
+    settings: settings
+  };
+};
+
 export const setWcaEvent = wcaEvent => {
   return {
     type: "SET_WCA_EVENT",

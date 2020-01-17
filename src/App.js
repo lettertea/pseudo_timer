@@ -5,8 +5,18 @@ import Container from "@material-ui/core/Container";
 import BottomNav from "./components/BottomNav";
 import Scramble from "./components/Scramble";
 import Svg from "./components/Svg";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import {setSettings, updateScramble} from "./actions";
 
 class App extends Component {
+
+  componentDidMount() {
+    const settingsFromLocalStorage = JSON.parse(localStorage.getItem("settings"));
+    if (settingsFromLocalStorage) {
+      this.props.setSettings(settingsFromLocalStorage)
+    }
+  }
 
   render() {
     return (
@@ -33,4 +43,12 @@ class App extends Component {
   }
 }
 
-export default App;
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      setSettings
+    },
+    dispatch
+  );
+export default connect(null, mapDispatchToProps)(App);
