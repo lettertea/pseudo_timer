@@ -5,7 +5,7 @@ import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import { bindActionCreators } from "redux";
-import { setInspection, setJudgeGender } from "../actions";
+import { setInspection, setVoiceType } from "../actions";
 import { connect } from "react-redux";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
@@ -91,8 +91,8 @@ function Inspection(props) {
             open={open}
             onClose={() => setOpen(false)}
             onOpen={() => setOpen(true)}
-            value={props.judgeGender}
-            onChange={e => {props.setJudgeGender(e.target.value)}}
+            value={props.voiceType}
+            onChange={e => {props.setVoiceType(e.target.value)}}
           >
             {["Male", "Female"].map((e, i) => (
               <MenuItem value={e} key={i}>
@@ -147,7 +147,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       setInspection,
-      setJudgeGender
+      setVoiceType
     },
     dispatch
   );

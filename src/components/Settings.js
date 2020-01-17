@@ -26,7 +26,7 @@ function Settings(props) {
         <Grid item xs={12}>
           {/* 196 for height to match the svg */}
           <StyledPaper height={196}>
-            <Inspection inspection={props.inspection} judgeGender={props.judgeGender}/>
+            <Inspection inspection={props.inspection} voiceType={props.voiceType}/>
           </StyledPaper>
         </Grid>
       </Grid>
@@ -38,5 +38,5 @@ export default connect((state) => ({
   svgScale: state.settings.svgScale,
   wcaEvent: state.settings.wcaEvent,
   inspection: state.settings.inspection,
-  judgeGender: state.settings.judgeGender
+  voiceType: state.settings.voiceType
 }))(Settings);

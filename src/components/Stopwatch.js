@@ -39,9 +39,9 @@ class Stopwatch extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.state.isInspecting) {
       if (this.props.settings.inspection.eightSeconds && prevState.inspectionTime === 8) {
-        INSPECTION_VOICES[this.props.settings.judgeGender].eightSeconds.play();
+        INSPECTION_VOICES[this.props.settings.voiceType].eightSeconds.play();
       } else if (this.props.settings.inspection.twelveSeconds && prevState.inspectionTime === 4) {
-        INSPECTION_VOICES[this.props.settings.judgeGender].twelveSeconds.play();
+        INSPECTION_VOICES[this.props.settings.voiceType].twelveSeconds.play();
       }
 
       if (prevState.isInspecting !== this.state.isInspecting) {
@@ -51,7 +51,7 @@ class Stopwatch extends Component {
           }));
         }, 1000);
         if (this.props.settings.inspection.inspectionBegins) {
-          INSPECTION_VOICES[this.props.settings.judgeGender].inspecting.play();
+          INSPECTION_VOICES[this.props.settings.voiceType].inspecting.play();
         }
       }
     }

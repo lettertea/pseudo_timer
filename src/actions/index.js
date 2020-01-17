@@ -68,9 +68,9 @@ export const setInspection = inspection => {
   };
 };
 
-export const setJudgeGender = judgeGender => {
+export const setVoiceType = voiceType => {
   return {
-    type: "SET_JUDGE_GENDER",
-    judgeGender: judgeGender
+    type: "SET_VOICE_TYPE",
+    voiceType: voiceType
   };
 };
