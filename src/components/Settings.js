@@ -7,7 +7,7 @@ import Inspection from "./Inspection";
 import {connect} from "react-redux";
 
 function Settings(props) {
-  const PAPER_HEIGHT = 125;
+  const PAPER_HEIGHT = 120;
 
   return (
     <div style={{flexGrow: 1}}>
@@ -24,7 +24,8 @@ function Settings(props) {
         </Grid>
 
         <Grid item xs={12}>
-          <StyledPaper height={PAPER_HEIGHT}>
+          {/* 196 for height to match the svg */}
+          <StyledPaper height={196}>
             <Inspection inspection={props.inspection} judgeGender={props.judgeGender}/>
           </StyledPaper>
         </Grid>

@@ -24,7 +24,7 @@ function SvgScale(props) {
       <Typography gutterBottom color={"textSecondary"}>
         SVG Scale
       </Typography>
-      <Grid container spacing={2} alignItems="center">
+      <Grid container alignItems="center">
         <Grid item xs>
           <Slider
             value={typeof value === "number" ? value : 0}

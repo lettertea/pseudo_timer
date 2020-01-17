@@ -84,7 +84,10 @@ function Inspection(props) {
             }
             label="Use Inspection"
           />
-          <Select
+
+          <FormControl component="fieldset" className={classes.formControl} style={{minWidth: 100}}>
+            <InputLabel>Voice Type</InputLabel>
+            <Select
             open={open}
             onClose={() => setOpen(false)}
             onOpen={() => setOpen(true)}
@@ -97,6 +100,7 @@ function Inspection(props) {
               </MenuItem>
             ))}
           </Select>
+          </FormControl>
         </FormGroup>
       </FormControl>
 
