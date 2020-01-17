@@ -11,20 +11,17 @@ import Settings from "./Settings";
 
 export default props => {
   const COMPONENTS = [
-    <Times recordedTimes={props.recordedTimes}/>,
-    <Settings
-      wcaEvent={props.wcaEvent}
-      setWcaEvent={props.setWcaEvent}
-    />,
+    <Times/>,
+    <Settings/>,
     null
   ];
   const [shownComponentIndex, setShownComponentIndex] = useState(0);
   const shownComponent = COMPONENTS[shownComponentIndex];
 
   return (
-    <Grid container direction={"column"} >
+    <Grid container direction={"column"}>
 
-    <BottomNavigation
+      <BottomNavigation
         value={shownComponentIndex}
         onChange={(event, newValue) => {
           setShownComponentIndex(newValue);
