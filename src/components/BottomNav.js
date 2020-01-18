@@ -4,16 +4,17 @@ import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import SettingsIcon from "@material-ui/icons/Settings";
 import FormatListNumberedIcon from "@material-ui/icons/FormatListNumbered";
-import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import InfoIcon from '@material-ui/icons/Info';
 import Times from "./Times";
 import Settings from "./Settings";
+import About from "./About";
 
 
 export default props => {
   const COMPONENTS = [
     <Times/>,
     <Settings/>,
-    null
+    <About/>
   ];
   const [shownComponentIndex, setShownComponentIndex] = useState(0);
   const shownComponent = COMPONENTS[shownComponentIndex];
@@ -33,7 +34,7 @@ export default props => {
           icon={<FormatListNumberedIcon/>}
         />
         <BottomNavigationAction label="Settings" icon={<SettingsIcon/>}/>
-        <BottomNavigationAction label="Hidden" icon={<VisibilityOffIcon/>}/>
+        <BottomNavigationAction label="About" icon={<InfoIcon/>}/>
       </BottomNavigation>
       <div>{shownComponent}</div>
     </Grid>
