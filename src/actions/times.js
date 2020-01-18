@@ -20,6 +20,7 @@ export const addTime = milliseconds => (dispatch, getState) => {
     scramble: state.scramble
   };
 
+
   if (eventTimesCopy.length === 0) {
     eventTimesCopy = [timeDetails]
   } else {

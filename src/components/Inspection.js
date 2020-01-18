@@ -1,12 +1,12 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import { bindActionCreators } from "redux";
-import { setInspection, setVoiceType } from "../actions";
-import { connect } from "react-redux";
+import {bindActionCreators} from "redux";
+import {setInspection, setVoiceType} from "../actions";
+import {connect} from "react-redux";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -21,9 +21,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const INITIAL_STATE = {
-  useInspection: true,
-  eightSeconds: true,
-  twelveSeconds: true,
+  useInspection: false,
+  eightSeconds: false,
+  twelveSeconds: false,
   inspectionBegins: false
 };
 
@@ -40,15 +40,15 @@ function Inspection(props) {
 
   const handleChange = name => event => {
     if (name === USE_INSPECTION) {
-      if (event.target.checked) {
-        props.setInspection(INITIAL_STATE);
-      } else {
+      if (!event.target.checked) {
         props.setInspection({
           useInspection: false,
           eightSeconds: false,
           twelveSeconds: false,
           inspectionBegins: false
         });
+      } else {
+        props.setInspection({...props.inspection, useInspection: true});
       }
     } else {
       const inspectionOptions = {
@@ -88,18 +88,20 @@ function Inspection(props) {
           <FormControl component="fieldset" className={classes.formControl} style={{minWidth: 100}}>
             <InputLabel>Voice Type</InputLabel>
             <Select
-            open={open}
-            onClose={() => setOpen(false)}
-            onOpen={() => setOpen(true)}
-            value={props.voiceType}
-            onChange={e => {props.setVoiceType(e.target.value)}}
-          >
-            {["Male", "Female"].map((e, i) => (
-              <MenuItem value={e} key={i}>
-                {e}
-              </MenuItem>
-            ))}
-          </Select>
+              open={open}
+              onClose={() => setOpen(false)}
+              onOpen={() => setOpen(true)}
+              value={props.voiceType}
+              onChange={e => {
+                props.setVoiceType(e.target.value)
+              }}
+            >
+              {["Male", "Female"].map((e, i) => (
+                <MenuItem value={e} key={i}>
+                  {e}
+                </MenuItem>
+              ))}
+            </Select>
           </FormControl>
         </FormGroup>
       </FormControl>
