@@ -7,7 +7,7 @@ import Scramble from "./components/Scramble";
 import Svg from "./components/Svg";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {setSettings, updateScramble} from "./actions";
+import {setSettings} from "./actions";
 
 class App extends Component {
 

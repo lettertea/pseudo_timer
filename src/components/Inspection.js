@@ -41,12 +41,7 @@ function Inspection(props) {
   const handleChange = name => event => {
     if (name === USE_INSPECTION) {
       if (!event.target.checked) {
-        props.setInspection({
-          useInspection: false,
-          eightSeconds: false,
-          twelveSeconds: false,
-          inspectionBegins: false
-        });
+        props.setInspection(INITIAL_STATE);
       } else {
         props.setInspection({...props.inspection, useInspection: true});
       }
@@ -82,6 +77,7 @@ function Inspection(props) {
                 value={USE_INSPECTION}
               />
             }
+
             label="Use Inspection"
           />
 

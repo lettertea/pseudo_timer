@@ -21,7 +21,7 @@ function SvgScale(props) {
 
   return (
     <div style={{ width: 250 }}>
-      <Typography gutterBottom color={"textSecondary"}>
+      <Typography gutterBottom>
         SVG Scale
       </Typography>
       <Grid container alignItems="center">
