@@ -5,9 +5,9 @@ const INITIAL_STATE = {
   voiceType: "Male",
   svgScale: 2,
   inspection: {
-    useInspection: true,
-    eightSeconds: true,
-    twelveSeconds: true,
+    useInspection: false,
+    eightSeconds: false,
+    twelveSeconds: false,
     inspectionBegins: false
   }
 }
