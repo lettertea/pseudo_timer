@@ -18,14 +18,13 @@ This website is meant to log times and their averages for WCA event solves. It u
 
 # Installation
 
-*   Clone the Repository
+*   Clone the repository
 
 ```
 $ git clone https://github.com/nashkenazy/pseudo_timer.git
 ```
 
-*   Navigate to the root directory in the command line
-
+*   Navigate to the root directory
 ```
 $ cd pseudo_timer
 ```
@@ -36,5 +35,5 @@ $ cd pseudo_timer
 # Running the Application
 
 
-*   Open the shell in the root directory and run `$ yarn start` or `$ npm start`.
+*   From the root directory, run `$ yarn start` or `$ npm start`.
 
