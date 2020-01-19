@@ -8,7 +8,8 @@ function Svg(props) {
 
   useEffect(() => {
     if (window.puzzles && props.scramble !== "Loading Scramble...") {
-      svgRef.current.innerHTML = window.toSVG(props.scramble, window.puzzles[props.settings.wcaEvent])
+      let parsedWcaEvent = props.settings.wcaEvent === "333oh" ? "333" : props.settings.wcaEvent;
+      svgRef.current.innerHTML = window.toSVG(props.scramble, window.puzzles[parsedWcaEvent])
     }
   }, [props.scramble])
 
