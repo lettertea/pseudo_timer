@@ -5,7 +5,7 @@ export const addTime = milliseconds => (dispatch, getState) => {
   const state = getState();
 
   // Create eventTimesCopy with just timeInMilliseconds added for now to do average calculations
-  let eventTimesCopy = state.times[state.wcaEvent] ? [{timeInMilliseconds: milliseconds}, ...state.times[state.wcaEvent]] : [];
+  let eventTimesCopy = state.times[state.settings.wcaEvent] ? [{timeInMilliseconds: milliseconds}, ...state.times[state.settings.wcaEvent]] : [];
 
   const timeDetails = {
     solveNumber: eventTimesCopy.length || 1,
@@ -27,8 +27,9 @@ export const addTime = milliseconds => (dispatch, getState) => {
     eventTimesCopy[0] = timeDetails;
   }
 
-  const updatedTimes = {...state.times, [state.wcaEvent]: eventTimesCopy};
+  const updatedTimes = {...state.times, [state.settings.wcaEvent]: eventTimesCopy};
 
+  console.log(state.settings.wcaEvent);
   localStorage.setItem("times", JSON.stringify(updatedTimes));
   dispatch({
     type: "ADD_TIME",

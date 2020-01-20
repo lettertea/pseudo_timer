@@ -208,7 +208,7 @@ function Times(props) {
 
 const mapStateToProps = (state) => ({
   times: state.times,
-  wcaEvent: state.wcaEvent
+  wcaEvent: state.settings.wcaEvent
 })
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
